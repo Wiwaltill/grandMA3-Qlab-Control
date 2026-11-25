@@ -59,3 +59,17 @@ wird verweigert. Die Stabilität dieser Handles nach Save/Reload, PSR und
 Showmigration muss auf MA geprüft werden. Falls sie sich ändern: keine
 automatische Neuübernahme anhand von Labels. Eine Konfiguration pro Show;
 Installationsumfang an den ursprünglichen Datenpool gebunden.
+
+## 0.2.0-beta.2: Start und Import
+
+Kein MA-API-/Handle-Zugriff beim Laden der LuaComponent. Der Component-Handle
+wird nur gespeichert; Parent() wird erst zur Installation aufgerufen, wie auch
+im [offiziellen HookObjectChange-Beispiel](https://help.malighting.com/grandMA3/2.3/HTML/lua_objectfree_hookobjectchange.html)
+innerhalb der Main-Funktion. Ein Fehler bei diesem Zugriff wird nun sichtbar
+behandelt und verhindert nicht das Laden des Plugins.
+
+Das XML bettet den Code als FileContent ein. Die Struktur wurde mit einer lokal
+vorhandenen Datei mit DataVersion 2.5.1.1 abgeglichen: Size zählt die Block-Knoten,
+jeder Block umfasst maximal 1024 dekodierte Bytes. Die generierten Blöcke sind
+Base64 und werden bytegenau geprüft. Die separate Lua-Datei wird nicht vom XML
+referenziert. Ein erfolgreicher Import auf dem Nutzer-onPC ist noch zu bestätigen.

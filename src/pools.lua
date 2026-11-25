@@ -104,8 +104,10 @@ function M.new(core,api,config,plugin)
     end
     function self.install()
         self.preflight()
-        assert(plugin,'Aufrufendes Plugin nicht gefunden')
-        local pluginAddress=address(plugin)
+        local pluginHandle=plugin
+        if type(plugin)=='function' then pluginHandle=plugin() end
+        assert(pluginHandle,'Aufrufendes Plugin nicht gefunden')
+        local pluginAddress=address(pluginHandle)
         save('scope',scope)
         save('complete',0)
         -- Build dependencies first; layout last. No macro is executed.

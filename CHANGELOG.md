@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.2.0-beta.2
+
+- Plugin-Handle wird erst bei der Installation im geschützten Aufruf aufgelöst.
+  Kein Zugriff auf MA-Handles mehr beim Laden der LuaComponent.
+- XML enthält den vollständigen Lua-Code im nativen FileContent-/Base64-Format;
+  der Start hängt nicht mehr von einer externen Lua-Datei ab.
+- Start schreibt die Build-Version in die Command Line History. Regressionstest
+  für Setup-Start mit nicht verfügbarem Parent-Handle; XML-Inhalt wird bytegenau
+  mit dem Lua-Build verglichen und unter Lua 5.4 geladen.
+- Der auf dem Nutzer-onPC beobachtete stille Startfehler ist damit abgesichert;
+  dessen genaue Ursache und die Behebung auf dem Zielsystem sind noch zu bestätigen.
+
 ## 0.2.0-beta.1
 
 - Automatische Installation von Layout, elf Makros und zwölf Appearances.

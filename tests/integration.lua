@@ -163,4 +163,21 @@ test('generated component dispatches install and test with its own plugin handle
     for k in pairs(m.api) do _G[k]=previous[k] end
     assert(ok,err)
 end)
+test('component loads without touching MA and opens setup with unavailable parent',function()
+    local m=mock(); local parentCalls=0; local previous={}
+    local errors={}
+    m.api.ErrPrintf=function(_,err) errors[#errors+1]=err end
+    m.respond=function() return {success=true,result=0} end
+    for k,v in pairs(m.api) do previous[k]=_G[k]; _G[k]=v end
+    local ok,err=pcall(function()
+        local component={Parent=function() parentCalls=parentCalls+1; error('MA handle unavailable during load') end}
+        local entry=assert(loadfile('dist/QLab Control.lua'))('QLab Control','main',{},component)
+        assert(type(entry)=='function' and parentCalls==0)
+        entry(nil,nil)
+        assert(parentCalls==0 and #errors==0 and #m.commands==0)
+        assert(#m.dialogs==1 and m.dialogs[1].title=='QLab Control — Einstellungen')
+    end)
+    for k in pairs(m.api) do _G[k]=previous[k] end
+    assert(ok,err)
+end)
 print(count..' pool/transport integration test groups passed (mocked MA)')

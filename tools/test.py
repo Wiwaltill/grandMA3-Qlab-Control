@@ -4,6 +4,7 @@ from pathlib import Path
 from lupa.lua54 import LuaRuntime
 import xml.etree.ElementTree as ET
 from zipfile import ZipFile
+import base64
 
 root=Path(__file__).resolve().parents[1]
 os.chdir(root)
@@ -20,12 +21,20 @@ plugin=xml.find('UserPlugin')
 assert plugin.attrib['Name']=='QLab Control'
 components=plugin.findall('ComponentLua')
 assert len(components)==1
-filename=components[0].attrib['FileName']
-assert filename=='QLab Control.lua'
-with ZipFile(root/'dist/QLab-Control-0.2.0-beta.1-import.zip') as archive:
+assert 'FileName' not in components[0].attrib
+content=components[0].find('FileContent')
+blocks=content.findall('Block')
+assert int(content.attrib['Size'])==len(blocks)
+decoded=[base64.b64decode(b.attrib['Base64'],validate=True) for b in blocks]
+assert all(len(b)==1024 for b in decoded[:-1])
+embedded=b''.join(decoded)
+assert embedded==(root/'dist/QLab Control.lua').read_bytes()
+assert callable(lua.execute(embedded.decode('utf-8')))
+filename='QLab Control.lua'
+with ZipFile(root/'dist/QLab-Control-0.2.0-beta.2-import.zip') as archive:
     base='gma3_library/datapools/plugins/'
     assert archive.read(base+filename)==(root/'dist'/filename).read_bytes()
     assert archive.read(base+'QLab Control.xml')==(root/'dist/QLab Control.xml').read_bytes()
     assert archive.read('LICENSE')==(root/'LICENSE').read_bytes()
     assert archive.testzip() is None
-print('XML entry point, Lua reference, ZIP structure and license verified')
+print('Embedded XML source, Lua load, ZIP structure and license verified')

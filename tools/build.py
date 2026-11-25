@@ -7,9 +7,10 @@ from pathlib import Path
 from zipfile import ZipFile, ZipInfo, ZIP_DEFLATED
 import xml.etree.ElementTree as ET
 import hashlib
+import base64
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = '0.2.0-beta.1'
+VERSION = '0.2.0-beta.2'
 
 def build():
     out = ROOT / 'dist'
@@ -24,17 +25,30 @@ def build():
               'local guide=(function()\n'+guide+'\nend)()\n'
               'local pools=(function()\n'+pools+'\nend)()\n'
               'local component=select(4,...)\n'
-              'local plugin=component and component:Parent()\n'
+              '-- Do not access MA handles while the component is loading.\n'
+              'local function resolvePlugin()\n'
+              ' return component and component:Parent()\n'
+              'end\n'
               'return function(display_handle, argument)\n'
-              ' local ok,err=pcall(function() adapter.new(core,_G,guide,pools,plugin).run(argument) end)\n'
+              ' local ok,err=pcall(function()\n'
+              '  Printf("QLab Control '+VERSION+' gestartet")\n'
+              '  adapter.new(core,_G,guide,pools,resolvePlugin).run(argument)\n'
+              ' end)\n'
               ' if not ok then ErrPrintf("QLab Control: %s",tostring(err)); '
               'MessageBox({title="QLab Control — Fehler",message=tostring(err),commands={{value=0,name="Schließen"}}}) end\n'
               'end\n')
     lua = out / 'QLab Control.lua'
     lua.write_text(source)
     root = ET.Element('GMA3', DataVersion='2.5.1.1')
-    plugin = ET.SubElement(root, 'UserPlugin', Name='QLab Control', Version='0.2.0.1')
-    ET.SubElement(plugin, 'ComponentLua', Name='QLab Control', FileName=lua.name)
+    plugin = ET.SubElement(root, 'UserPlugin', Name='QLab Control', Version='0.2.0.2')
+    component = ET.SubElement(plugin, 'ComponentLua', Name='QLab Control')
+    # Native 2.5.1.1 FileContent format: Size is the number of 1024-byte blocks,
+    # not the source size. With no FileName, import uses this embedded source.
+    data=source.encode('utf-8')
+    blocks=[data[i:i+1024] for i in range(0,len(data),1024)]
+    content=ET.SubElement(component, 'FileContent', Size=str(len(blocks)))
+    for block in blocks:
+        ET.SubElement(content, 'Block', Base64=base64.b64encode(block).decode('ascii'))
     ET.indent(root, space='    ')
     xml = out / 'QLab Control.xml'
     ET.ElementTree(root).write(xml, encoding='utf-8', xml_declaration=True)
