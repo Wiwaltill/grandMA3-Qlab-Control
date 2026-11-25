@@ -9,7 +9,9 @@ python3 tools/test.py
 ```
 
 Die Tests führen den tatsächlichen Lua-Code unter Lua 5.4 aus. MA-APIs werden
-gemockt. Netzwerk und Pool-Mutationen sind in diesem Meilenstein gesperrt.
+gemockt. 19 Kern-/Dialog-Testgruppen und 16 Installer-/Transport-Testgruppen
+bestehen. Der produktive Adapter kann Pool-Objekte ändern und SendOSC ausführen;
+die Tests ersetzen kein MA-/QLab-Testsystem.
 
 Vor dem nächsten Meilenstein auf 2.5.1.1:
 
@@ -39,4 +41,4 @@ Vor einer vollständigen V1-Freigabe:
 - LICENSE unverändert beilegen; Version/Changelog aktualisieren; Import-ZIP
   in frischer Testshow prüfen; SHA-256 und Testprotokoll dem Release beilegen.
 
-Noch kein GitHub Release veröffentlichen: alle Integrationstests sind offen.
+Noch kein Produktionsrelease veröffentlichen: alle Tests auf echtem MA/QLab sind offen.

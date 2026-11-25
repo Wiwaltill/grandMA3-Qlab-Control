@@ -1,47 +1,92 @@
-# Entwicklungsstand installieren und prüfen
+# QLab Control installieren und testen
 
-Die Oberfläche ist deutsch. Die Schritt-für-Schritt-Anleitung für Netzwerk,
-QLab-Rechte und MA-OSC steht in [OSC-ANLEITUNG-DE.md](OSC-ANLEITUNG-DE.md).
-Im Setup öffnet **OSC-Anleitung** die Kurzhilfe ohne Speichern. Die technischen
-Befehle (`SETUP`, `START`, `SELECT` usw.) bleiben unverändert.
+Version **0.2.0-beta.1**, Ziel grandMA3 **2.5.1.1** / QLab **5**.
+Installer und Transport sind implementiert; Laufzeittests auf MA/QLab stehen aus.
+Eine gesicherte Testshow verwenden. Während der Installation keine anderen
+Nutzer die betroffenen Pool-Bereiche bearbeiten lassen.
 
-Dies ist **0.1.0-dev.4**, eine importierbare Entwicklungsvorschau, kein fertiges
-V1-Release. OSC, automatische Pool-Installation, Update und Cleanup sind noch
-gesperrt. Testbar sind Import, Plugin-Aufruf, grafisches Setup, Cue-Auswahl
-und die Ausgabe des Installationsplans.
+## Import und Einstellungen
 
-1. Show sichern; eine Testshow in grandMA3 2.5.1.1 verwenden.
-2. Die lokal bereitgestellten Dateien `QLab Control.xml` und `QLab Control.lua`
-   liegen zusammen in `~/MALightingTechnology/gma3_library/datapools/plugins/`.
-   Alternativ `python3 tools/build.py` ausführen und den Inhalt von
-   `dist/QLab-Control-0.1.0-dev.4-import.zip` in den MA-Datenordner entpacken.
-   Das ZIP enthält bereits `gma3_library/datapools/plugins/`.
-3. Einen **freien** Plugin-Pool-Slot bearbeiten, **Import** wählen, das lokale
-   Laufwerk und **QLab Control.xml** auswählen und importieren. Editor schließen
-   und das Plugin antippen. Das Setup sollte erscheinen; kein Code-Einfügen nötig.
-   Der tatsächliche Import auf onPC ist noch nicht von uns ausgeführt worden.
-4. `Plugin "QLab Control" "SETUP"` öffnet das native Setup-Fenster.
-   Port, OSC-Ausgang, Grafik-Cues und Pool-Bereiche setzen. Destination ist
-   optional und bleibt zunächst leer. Die dort gespeicherten Netzwerkdaten
-   ändern die MA-OSC-Konfiguration **nicht**.
-5. `Plugin "QLab Control" "PLAN"` listet die vorgesehenen 24 Objekte:
-   ein Layout, elf Macros und zwölf Appearances. Die Beispiele benötigen
-   Layout 200, Macros 501–511 und Appearances 501–512.
-6. `Plugin "QLab Control" "SELECT 101.2"` speichert die Auswahl ohne OSC.
+1. `QLab Control.xml` und `QLab Control.lua` liegen lokal gemeinsam in
+   `~/MALightingTechnology/gma3_library/datapools/plugins/`.
+   Alternativ das ZIP `QLab-Control-0.2.0-beta.1-import.zip` in den MA-Datenordner
+   entpacken; es enthält die passende `gma3_library/datapools/plugins/`-Struktur.
+2. Einen freien Plugin-Slot bearbeiten, **Import → lokales Laufwerk →
+   QLab Control.xml** wählen. Einen bisherigen Teststand gezielt aktualisieren.
+   Plugin antippen.
+3. QLab-Ziel, Port und MA-OSC-Zeilennummer eintragen. Ziel/Port sind Informationen;
+   die MA-Route wird manuell nach der [OSC-Anleitung](OSC-ANLEITUNG-DE.md) eingerichtet.
+4. Pool-Nummern festlegen. Standard: **Layout 200**, **Makros 501–511** und
+   **Appearances 501–512**. Die Bereiche müssen frei sein oder nachgewiesen
+   dieser Installation gehören.
 
-Das geplante Layout verwendet drei Spalten in der spezifizierten Reihenfolge,
-eine Statuszeile und unten SELECT CUE / SETUP. Es zeigt ausgewählten Cue,
-letzten Song und zuletzt angeforderte Aktion getrennt. Es gibt keine
-Online-Anzeige oder simulierten Fortschritt.
+## Automatisch installieren
 
-Spätere Show-Programmierung: `Plugin "QLab Control" "START 101.2"` in die
-CMD-Spalte eines passenden Licht-Cues schreiben. Im aktuellen Build endet
-dies absichtlich mit einer Meldung, ohne OSC zu senden. Gewöhnliche Licht-Cues
-benötigen keinen Videobefehl. QLab muss Übergänge, Fades und das Stoppen alter
-Gruppen selbst programmieren. NEXT ist manuelles GO am QLab-Playhead.
+**Layout installieren** übernimmt die Eingaben und erstellt 24 Pool-Objekte.
+Es sendet kein OSC und führt kein Makro aus. Alternativ nach **Speichern**:
 
-Setup-Werte liegen unter `QLC_V1_` in globalen Show-Variablen. Aktuell gibt
-es eine Konfiguration pro Show; mehrere Installationen/Datenpools sind noch
-nicht unterstützt. Schreibfehler können teilweise gespeicherte Werte hinterlassen;
-das Konfigurationskennzeichen bleibt dann inaktiv. Setup erneut vollständig speichern.
-Ein erneutes Setup setzt die vorhandene Cue-Auswahl nicht zurück.
+```text
+Plugin "QLab Control" "INSTALL"
+```
+
+Im **Layout Viewer** das konfigurierte Layout wählen, **Zoom to Fit** ausführen
+und den Setup-Modus ausschalten. Drei Spalten enthalten die Transportaktionen,
+Pausengrafik, Schwarzbild und Notstopp; darunter Cue-Auswahl und Einstellungen.
+Oben stehen Auswahl, letzter Song, letzte Anforderung und OSC-Ausgang.
+Die Anzeige bestätigt keine Wiedergabe oder Verbindung.
+
+`INSTALL` oder `UPDATE` aktualisiert die verwalteten Inhalte. Eigene Änderungen
+an generierten Eigenschaften werden dabei überschrieben. Fremde/ersetzte
+Objekte oder hinzugefügte Kindobjekte führen zum Abbruch vor der ersten Änderung.
+Labels allein reichen nicht als Eigentumsnachweis.
+
+Nach einem Fehler bleiben bereits erstellte Objekte mit einem Journal erhalten.
+Fehler beheben und `INSTALL` erneut aufrufen oder `UNINSTALL` verwenden.
+Nicht fremde Objekte in eine teilweise installierte Struktur einfügen.
+Veränderte Identitäten werden nicht automatisch übernommen oder gelöscht.
+
+## Einen echten OSC-Test ausführen
+
+1. MA-OSC und QLab-Zugriff nach der Anleitung manuell einrichten.
+2. In QLab einen ungefährlichen Test-Cue mit eigener Nummer vorbereiten.
+3. Plugin → Einstellungen → **OSC-Test** wählen, Test-Cue eingeben und dann
+   den Start ausdrücklich bestätigen. Der Test nutzt **gespeicherte** Werte;
+   geänderte Einstellungen vorher speichern.
+4. Alternativ `Plugin "QLab Control" "TEST 999"` aufrufen; `999` durch die eigene
+   Test-Cue-Nummer ersetzen.
+5. QLab beobachten. Der Test führt einen echten adressreinen SendOSC-Aufruf aus.
+   Diese Form ohne Argumente muss auf 2.5.1.1 geprüft werden. Ein MA-`OK`
+   bestätigt nur die Befehlsannahme, weder UDP-Empfang noch Wiedergabe.
+
+Es gibt keine automatische Wiederholung. Bei Syntaxfehler oder fehlender
+QLab-Reaktion Fehlermeldung und Paketmitschnitt prüfen. Installation und normales
+Speichern lösen keinen Test aus.
+
+## Show programmieren
+
+```text
+Plugin "QLab Control" "SELECT 101.2"
+Plugin "QLab Control" "START 101.2"
+Plugin "QLab Control" "PAUSE"
+Plugin "QLab Control" "RESUME"
+Plugin "QLab Control" "STOP"
+```
+
+Explizite START-Befehle in die CMD-Spalte der passenden Licht-Cues setzen.
+Gewöhnliche Licht-Cues brauchen keinen Video-Befehl. IDLE und BLACKOUT starten
+Grafik-Cues, ohne die Songreferenz zu verlieren. NEXT löst nach Bestätigung
+QLab-GO an der aktuellen Abspielposition aus. PANIC betrifft alle auf dem Port
+empfangenden Workspaces und verlangt Bestätigung. NEUSTART bleibt bis zur
+Definition verlässlicher QLab-Gruppensemantik gesperrt. Übergänge, Fades und
+Stopps vorheriger Gruppen werden in QLab programmiert.
+
+## Entfernen und Pool-Nummern ändern
+
+`Plugin "QLab Control" "UNINSTALL"` entfernt nach Bestätigung ausschließlich
+nachgewiesene Objekte. Die MA-OSC-Konfiguration und gespeicherte Plugin-Werte
+bleiben bestehen. Erst danach Pool-Nummern ändern und neu installieren.
+
+Eine Konfiguration pro Show; Installer und installierter Transport sind an den
+ursprünglichen Datenpool gebunden. Handle-Stabilität nach Show-Neuladen ist noch
+zu prüfen. Bei abweichenden Identitäten bricht das Plugin sicher ab. Keine
+Neuübernahme anhand ähnlich benannter Pool-Objekte erzwingen.

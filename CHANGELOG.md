@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.2.0-beta.1
+
+- Automatische Installation von Layout, elf Makros und zwölf Appearances.
+- Vollständiger Konflikt-Preflight, datenpoolgebundenes Eigentumsjournal mit
+  Kindobjekt-Identitäten, Wiederinstallation/Update und bestätigtes Cleanup.
+- Eigener bestätigter OSC-Test über Setup oder TEST mit Cue-Nummer;
+  echte SendOSC-Aufrufe und Last-Requested-Status nach MA-Befehlsannahme.
+- Mock-Tests für Kollisionen, ersetzte Objekte, Teilfehler, Datenpoolwechsel,
+  Testabbruch, Sendefehler und Transportzustände.
+- MA-/QLab-Tests, Paketformatprüfung und Save/Reload offen; Restart gesperrt.
+
 ## 0.1.0-dev.4
 
 - OSC-Anleitung als fünfseitiger nativer Assistent mit Fortschrittsanzeige,

@@ -1,9 +1,9 @@
 # OSC zwischen grandMA3 und QLab einrichten
 
-Stand: 0.1.0-dev.4, Ziel grandMA3 2.5.1.1 / QLab 5.
-**Die Verbindung wird manuell eingerichtet. Die OSC-Ausgabe des Plugins bleibt
-in diesem Entwicklungsstand gesperrt.** Auch eine korrekt eingerichtete Verbindung
-führt daher derzeit noch keinen Plugin-Transportbefehl aus.
+Stand: 0.2.0-beta.1, Ziel grandMA3 2.5.1.1 / QLab 5.
+**Die Verbindung wird manuell eingerichtet.** Ein echter OSC-Test ist jetzt
+über den Setup-Knopf **OSC-Test** möglich. Die adressreine SendOSC-Syntax ist
+auf deinem Zielsystem noch zu verifizieren; der Test bestätigt keine Wiedergabe.
 
 Im Plugin öffnet **OSC-Anleitung** die Kurzhilfe. Dieser Knopf schließt die
 Eingabe ohne Speichern. Vorher geänderte Werte zuerst mit **Speichern** übernehmen.
@@ -78,9 +78,12 @@ Gespeicherte Einstellungen früherer englischer Builds bleiben lesbar.
 - OSC-Anleitung öffnen: Es darf keine Ausgabe und keine Konfigurationsänderung erfolgen.
 - `SELECT 101.2` speichert eine Cue-Auswahl; `PLAN` listet geplante Pool-Objekte.
 
-Ein tatsächlicher QLab-Starttest folgt erst nach Verifikation des argumentfreien
-SendOSC-Formats. Die gesperrte Ausgabe ist kein Hinweis auf eine falsche IP.
-Auch eine gelbe MA-Sendeanzeige wäre allein kein Beleg für QLab-Wiedergabe.
+Für den echten Starttest im Setup **OSC-Test** wählen, einen eigenen
+ungefährlichen QLab-Cue eingeben und den Start bestätigen. Alternativ:
+`Plugin "QLab Control" "TEST 999"`. Die Form `SendOSC 1 "/cue/999/start"`
+wird damit real ausgeführt. Bei Syntaxfehler wird abgebrochen, ohne Wiederholung.
+QLab beobachten und das argumentfreie OSC-Paketformat prüfen. Eine gelbe
+MA-Sendeanzeige oder ein MA-OK belegen keine QLab-Wiedergabe.
 
 Bei späteren Verbindungstests prüfen: MA-Zeilennummer, Mac-IP, OSC-Port,
 UDP, leeres Prefix, Schnittstelle, Firewall und QLab-Control-Recht. Keine
