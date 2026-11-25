@@ -1,13 +1,14 @@
-"""Build a self-contained Lua component and a reproducible development ZIP.
+"""Build Lua, grandMA3 XML entry point and reproducible import ZIP.
 
-No speculative grandMA XML wrapper: use the component editor until a native
-2.5.1.1 export fixture is available and its round-trip has been tested.
+UserPlugin/ComponentLua follow local MA examples and the official Plugins docs.
+No local third-party source code is bundled.
 """
 from pathlib import Path
 from zipfile import ZipFile, ZipInfo, ZIP_DEFLATED
+import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = '0.1.0-dev.1'
+VERSION = '0.1.0-dev.2'
 
 def build():
     out = ROOT / 'dist'
@@ -23,10 +24,17 @@ def build():
               'end\n')
     lua = out / 'QLab Control.lua'
     lua.write_text(source)
-    files = {'QLab Control.lua': lua, 'README.md': ROOT/'README.md',
+    root = ET.Element('GMA3', DataVersion='2.5.1.1')
+    plugin = ET.SubElement(root, 'UserPlugin', Name='QLab Control', Version='0.1.0.2')
+    ET.SubElement(plugin, 'ComponentLua', Name='QLab Control', FileName=lua.name)
+    ET.indent(root, space='    ')
+    xml = out / 'QLab Control.xml'
+    ET.ElementTree(root).write(xml, encoding='utf-8', xml_declaration=True)
+    base='gma3_library/datapools/plugins/'
+    files = {base+lua.name: lua, base+xml.name: xml, 'README.md': ROOT/'README.md',
              'LICENSE': ROOT/'LICENSE'}
     files.update({'docs/'+p.name:p for p in sorted((ROOT/'docs').glob('*.md'))})
-    archive = out/f'QLab-Control-{VERSION}-source-preview.zip'
+    archive = out/f'QLab-Control-{VERSION}-import.zip'
     with ZipFile(archive, 'w', compression=ZIP_DEFLATED) as z:
         for name,path in sorted(files.items()):
             info=ZipInfo(name, date_time=(2026,1,1,0,0,0))

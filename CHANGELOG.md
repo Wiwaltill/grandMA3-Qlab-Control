@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.0-dev.2
+
+- MA-XML-Einstieg mit externer LuaComponent ergänzt; ZIP verwendet die native
+  Ordnerstruktur `gma3_library/datapools/plugins/`.
+- XML-/Lua-Referenz, ZIP-Inhalt und LICENSE werden automatisch geprüft.
+- Importanleitung ersetzt manuelles Einfügen von Lua-Code. Import auf onPC,
+  Pool-Installer und OSC-Ausgabe bleiben offen.
+
 ## 0.1.0-dev.1
 
 - Erster reiner Lua-Kern: Whitelist-Parser, Konfiguration, Cue-Strings,

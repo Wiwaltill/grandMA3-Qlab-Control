@@ -1,15 +1,20 @@
 # Entwicklungsstand installieren und prüfen
 
-Dies ist **0.1.0-dev.1**, eine Quellcode-Vorschau, kein einsatzfertiges V1-Release.
-OSC, automatische Pool-Installation, Update und Cleanup sind noch gesperrt.
-Das Layout existiert als vollständiger Datenplan, noch nicht als MA-Pool-Objekt.
+Dies ist **0.1.0-dev.2**, eine importierbare Entwicklungsvorschau, kein fertiges
+V1-Release. OSC, automatische Pool-Installation, Update und Cleanup sind noch
+gesperrt. Testbar sind Import, Plugin-Aufruf, grafisches Setup, Cue-Auswahl
+und die Ausgabe des Installationsplans.
 
 1. Show sichern; eine Testshow in grandMA3 2.5.1.1 verwenden.
-2. `python3 tools/build.py` erzeugt `dist/QLab Control.lua` und ein versioniertes
-   ZIP. Das ZIP ist noch kein über den MA-Importdialog importierbares Paket.
-3. In einem freien Plugin-Slot eine LuaComponent anlegen, den generierten
-   Lua-Code im Editor einfügen und Plugin `QLab Control` nennen. Diese manuelle
-   Entwicklungsroute muss ebenfalls auf dem Zielsystem geprüft werden.
+2. Die lokal bereitgestellten Dateien `QLab Control.xml` und `QLab Control.lua`
+   liegen zusammen in `~/MALightingTechnology/gma3_library/datapools/plugins/`.
+   Alternativ `python3 tools/build.py` ausführen und den Inhalt von
+   `dist/QLab-Control-0.1.0-dev.2-import.zip` in den MA-Datenordner entpacken.
+   Das ZIP enthält bereits `gma3_library/datapools/plugins/`.
+3. Einen **freien** Plugin-Pool-Slot bearbeiten, **Import** wählen, das lokale
+   Laufwerk und **QLab Control.xml** auswählen und importieren. Editor schließen
+   und das Plugin antippen. Das Setup sollte erscheinen; kein Code-Einfügen nötig.
+   Der tatsächliche Import auf onPC ist noch nicht von uns ausgeführt worden.
 4. `Plugin "QLab Control" "SETUP"` öffnet das native Setup-Fenster.
    Port, OSC-Ausgang, Grafik-Cues und Pool-Bereiche setzen. Destination ist
    optional und bleibt zunächst leer. Die dort gespeicherten Netzwerkdaten

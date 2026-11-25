@@ -17,8 +17,11 @@ einige Lua-Seiten zeigen trotz 2.5-Pfad den Stand 2.2 an.
 | XML / Pool-Adapter | [MA Plugins](https://help.malighting.com/grandMA3/2.5/HTML/plugins.html) | Export einer nativen 2.5.1.1-Referenz benötigt: Plugin mit LuaComponent, Layout mit Macro-Zuweisung, Appearance und Macro-Zeile. Schema/Properties und Import-Roundtrip noch offen |
 
 Die reinen Lua-Tests beweisen Parser, Zustandsmodell, Plan und Adapter-Grenzen.
-Sie beweisen keine MA-Lauffähigkeit und keine OSC-Zustellung. Das Build enthält
-deshalb weder erfundenes Import-XML noch freigeschaltete Pool-/Netzwerkschreibzugriffe.
+Sie beweisen keine MA-Lauffähigkeit und keine OSC-Zustellung. Das Build enthält einen XML-Einstieg mit externer LuaComponent entsprechend
+der offiziellen Plugin-Dokumentation. Die Tags UserPlugin und ComponentLua sind
+auch in lokal vorhandenen MA-Beispielen belegt; eine vorhandene Plugin-Datei trägt
+DataVersion 2.5.1.1. Fremder Lua-Code wird nicht übernommen. Der Import-Roundtrip
+auf 2.5.1.1 sowie Pool-/Netzwerkschreibzugriffe bleiben noch ungeprüft.
 
 Numerische Cue-Strings einschließlich einer Dezimalstelle werden unterstützt;
 alphanumerische QLab-Cue-Nummern sind in dieser ersten Implementierung bewusst
