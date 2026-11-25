@@ -10,7 +10,7 @@ import hashlib
 import base64
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = '0.2.0-beta.3'
+VERSION = '0.2.0-beta.4'
 
 def build():
     out = ROOT / 'dist'
@@ -35,12 +35,12 @@ def build():
               '  adapter.new(core,_G,guide,pools,resolvePlugin).run(argument)\n'
               ' end)\n'
               ' if not ok then ErrPrintf("QLab Control: %s",tostring(err)); '
-              'MessageBox({title="QLab Control — Fehler",message=tostring(err),commands={{value=0,name="Schließen"}}}) end\n'
+              'MessageBox({title="QLab Control '+VERSION+' — Fehler",message=tostring(err),commands={{value=0,name="Schließen"}}}) end\n'
               'end\n')
     lua = out / 'QLab Control.lua'
     lua.write_text(source)
     root = ET.Element('GMA3', DataVersion='2.5.1.1')
-    plugin = ET.SubElement(root, 'UserPlugin', Name='QLab Control', Version='0.2.0.3')
+    plugin = ET.SubElement(root, 'UserPlugin', Name='QLab Control', Version='0.2.0.4')
     component = ET.SubElement(plugin, 'ComponentLua', Name='QLab Control')
     # Native 2.5.1.1 FileContent format: Size is the number of 1024-byte blocks,
     # not the source size. With no FileName, import uses this embedded source.
@@ -52,8 +52,11 @@ def build():
     ET.indent(root, space='    ')
     xml = out / 'QLab Control.xml'
     ET.ElementTree(root).write(xml, encoding='utf-8', xml_declaration=True)
+    versioned_xml=out / ('QLab Control '+VERSION+'.xml')
+    versioned_xml.write_bytes(xml.read_bytes())
     base='gma3_library/datapools/plugins/'
-    files = {base+lua.name: lua, base+xml.name: xml, 'README.md': ROOT/'README.md',
+    files = {base+lua.name: lua, base+xml.name: xml, base+versioned_xml.name: versioned_xml,
+             'README.md': ROOT/'README.md',
              'LICENSE': ROOT/'LICENSE', 'CHANGELOG.md': ROOT/'CHANGELOG.md'}
     files.update({'docs/'+p.name:p for p in sorted((ROOT/'docs').glob('*.md'))})
     archive = out/f'QLab-Control-{VERSION}-import.zip'

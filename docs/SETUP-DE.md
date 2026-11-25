@@ -1,6 +1,6 @@
 # QLab Control installieren und testen
 
-Version **0.2.0-beta.3**, Ziel grandMA3 **2.5.1.1** / QLab **5**.
+Version **0.2.0-beta.4**, Ziel grandMA3 **2.5.1.1** / QLab **5**.
 Installer und Transport sind implementiert; Laufzeittests auf MA/QLab stehen aus.
 Eine gesicherte Testshow verwenden. Während der Installation keine anderen
 Nutzer die betroffenen Pool-Bereiche bearbeiten lassen.
@@ -9,15 +9,18 @@ Nutzer die betroffenen Pool-Bereiche bearbeiten lassen.
 
 1. `QLab Control.xml` und `QLab Control.lua` liegen lokal gemeinsam in
    `~/MALightingTechnology/gma3_library/datapools/plugins/`.
-   Alternativ das ZIP `QLab-Control-0.2.0-beta.3-import.zip` in den MA-Datenordner
+   Alternativ das ZIP `QLab-Control-0.2.0-beta.4-import.zip` in den MA-Datenordner
    entpacken; es enthält die passende `gma3_library/datapools/plugins/`-Struktur.
 2. Einen freien Plugin-Slot bearbeiten, **Import → lokales Laufwerk →
-   QLab Control.xml** wählen. Einen bisherigen Teststand gezielt aktualisieren.
+   QLab Control 0.2.0-beta.4.xml** wählen. Einen bisherigen Teststand gezielt aktualisieren.
    Plugin antippen.
    Das XML enthält ab beta.2 den vollständigen Lua-Code. Die separate Lua-Datei
    bleibt zum Nachlesen enthalten, wird für diesen Import aber nicht benötigt.
-   Beim Start muss `QLab Control 0.2.0-beta.3 gestartet` in der Command Line
+   Beim Start muss `QLab Control 0.2.0-beta.4 gestartet` in der Command Line
    History erscheinen. Fehlt die Meldung, ist der neue Code noch nicht gestartet.
+   Im Einstellungsfenster muss ebenfalls **0.2.0-beta.4** im Titel stehen.
+   Dateien auf der Festplatte zu ersetzen aktualisiert einen bereits im Showfile
+   gespeicherten Plugin-Code nicht automatisch: dafür das XML neu importieren.
 3. QLab-Ziel, Port und MA-OSC-Zeilennummer eintragen. Ziel/Port sind Informationen;
    die MA-Route wird manuell nach der [OSC-Anleitung](OSC-ANLEITUNG-DE.md) eingerichtet.
 4. Pool-Nummern festlegen. Standard: **Layout 200**, **Makros 501–511** und

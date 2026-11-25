@@ -117,7 +117,7 @@ test('German labels map to stable storage and preserve old values',function()
     for k,v in pairs(c) do assert(vars['QLC_V1_'..k]==v) end
     local original=api.MessageBox
     api.MessageBox=function(box)
-        assert(box.title=='QLab Control — Einstellungen')
+        assert(box.title=='QLab Control '..core.version..' — Einstellungen')
         assert(#box.inputs==8 and box.inputs[1].value=='qlab.local')
         assert(box.inputs[3].value=='4')
         return {success=true,result=0}

@@ -31,10 +31,11 @@ embedded=b''.join(decoded)
 assert embedded==(root/'dist/QLab Control.lua').read_bytes()
 assert callable(lua.execute(embedded.decode('utf-8')))
 filename='QLab Control.lua'
-with ZipFile(root/'dist/QLab-Control-0.2.0-beta.3-import.zip') as archive:
+with ZipFile(root/'dist/QLab-Control-0.2.0-beta.4-import.zip') as archive:
     base='gma3_library/datapools/plugins/'
     assert archive.read(base+filename)==(root/'dist'/filename).read_bytes()
     assert archive.read(base+'QLab Control.xml')==(root/'dist/QLab Control.xml').read_bytes()
+    assert archive.read(base+'QLab Control 0.2.0-beta.4.xml')==(root/'dist/QLab Control.xml').read_bytes()
     assert archive.read('LICENSE')==(root/'LICENSE').read_bytes()
     assert archive.testzip() is None
 print('Embedded XML source, Lua load, ZIP structure and license verified')

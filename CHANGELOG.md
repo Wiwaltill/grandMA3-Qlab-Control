@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.0-beta.4
+
+- Eindeutig benannte Importdatei `QLab Control 0.2.0-beta.4.xml` ergänzt.
+- Einstellungs- und Fehlerfenster zeigen die Build-Version, damit ein weiterhin
+  im Showfile gespeicherter Altstand sofort erkennbar ist.
+- Erneuter Screenshot mit tonumber an Zeile 297 entspricht dem alten
+  beta.1/beta.2-Code; der beta.3-Fix bleibt unverändert enthalten.
+
 ## 0.2.0-beta.3
 
 - GetVar-Adapter liefern ausdrücklich genau einen Wert. Zusätzliche

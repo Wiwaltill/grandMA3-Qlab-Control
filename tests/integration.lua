@@ -175,7 +175,7 @@ test('component loads without touching MA and opens setup with unavailable paren
         assert(type(entry)=='function' and parentCalls==0)
         entry(nil,nil)
         assert(parentCalls==0 and #errors==0 and #m.commands==0)
-        assert(#m.dialogs==1 and m.dialogs[1].title=='QLab Control — Einstellungen')
+        assert(#m.dialogs==1 and m.dialogs[1].title=='QLab Control '..core.version..' — Einstellungen')
     end)
     for k in pairs(m.api) do _G[k]=previous[k] end
     assert(ok,err)

@@ -93,7 +93,7 @@ function M.new(core, api, guide, poolModule, plugin)
         for _,field in ipairs(fields) do
             inputs[#inputs+1]={name=field[2],value=tostring(c[field[1]])}
         end
-        local r=api.MessageBox({title='QLab Control — Einstellungen',
+        local r=api.MessageBox({title='QLab Control '..core.version..' — Einstellungen',
             message='Speichern / Installieren übernimmt die Eingaben. Netzwerkdaten ändern keine MA-OSC-Route. Anleitung und OSC-Test verwenden die bereits gespeicherten Werte.',
             commands={{value=1,name='Speichern'},{value=2,name='OSC-Anleitung'},
                 {value=3,name='Layout installieren'},{value=4,name='OSC-Test'},{value=0,name='Abbrechen'}},inputs=inputs,
