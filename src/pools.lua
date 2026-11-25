@@ -57,10 +57,7 @@ function M.new(core,api,config,plugin)
         local p=property(h,k)
         h:Set(p,tostring(v))
         local actual=h:Get(p)
-        local matches=tostring(actual)==tostring(v)
-        if tonumber(actual) and tonumber(v) then matches=tonumber(actual)==tonumber(v) end
-        if v=='Yes' then matches=tostring(actual)=='1' or actual=='Yes' end
-        if v=='No' then matches=tostring(actual)=='0' or actual=='No' end
+        local matches=core.propertyMatches(v,actual)
         assert(matches,'MA-Eigenschaft nicht übernommen: '..k..' = '..tostring(v)..' (gelesen '..tostring(actual)..')')
     end
     function self.preflight()

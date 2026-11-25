@@ -9,7 +9,7 @@ python3 tools/test.py
 ```
 
 Die Tests führen den tatsächlichen Lua-Code unter Lua 5.4 aus. MA-APIs werden
-gemockt. 19 Kern-/Dialog-Testgruppen und 19 Installer-/Transport-Testgruppen
+gemockt. 20 Kern-/Dialog-Testgruppen und 20 Installer-/Transport-Testgruppen
 bestehen. Der produktive Adapter kann Pool-Objekte ändern und SendOSC ausführen;
 die Tests ersetzen kein MA-/QLab-Testsystem.
 

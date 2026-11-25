@@ -1,5 +1,5 @@
 -- Pure Lua: no grandMA globals, I/O, or network access.
-local M = {version = '0.2.0-beta.5'}
+local M = {version = '0.2.0-beta.6'}
 local transport = {START='start', STOP='stop', PAUSE='pause', RESUME='resume'}
 local special = {IDLE='idle', BLACKOUT='blackout'}
 local other = {SETUP=true, SELECT=true, NEXT=true, PANIC=true, RESTART=true,
@@ -54,6 +54,23 @@ end
 function M.quote(s)
     assert(type(s)=='string' and not s:find('[%c"\\;]'), 'Unsicherer Text für einen MA-Befehl')
     return '"'..s..'"'
+end
+
+-- MA property getters can return native booleans, numeric flags or text.
+-- Recognize both states explicitly: Lua treats 0 and "false" as truthy.
+function M.propertyMatches(expected,actual)
+    if expected=='Yes' or expected==true then
+        return actual==true or actual==1 or actual=='1' or actual=='Yes' or actual=='true'
+    elseif expected=='No' or expected==false then
+        return actual==false or actual==0 or actual=='0' or actual=='No' or actual=='false'
+    end
+    if tostring(actual)==tostring(expected) then return true end
+    local function numeric(value)
+        if type(value)=='number' then return value end
+        if type(value)=='string' then return tonumber(value) end
+    end
+    local a,b=numeric(actual),numeric(expected)
+    return a~=nil and b~=nil and a==b
 end
 
 -- Native layout specification, independent of the runtime property schema.

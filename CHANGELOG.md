@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.2.0-beta.6
+
+- Eigenschaftsprüfung akzeptiert native MA-Boolean-Werte für Yes/No, zusätzlich
+  zu numerischen und textuellen Darstellungen. Behebt den fälschlichen Abbruch
+  „Enabled = Yes (gelesen true)“ beim Erstellen der Makros.
+- Falsche oder unbekannte Zustände werden weiterhin abgelehnt; kein pauschales
+  Lua-Truthiness-Matching (0 und "false" sind in Lua wahrheitswertig).
+- Mock verwendet standardmäßig native Boolean-Rückgaben; Wiederaufnahme einer
+  Teilinstallation sowie wiederholte Installation damit geprüft.
+
 ## 0.2.0-beta.5
 
 - SendOSC-Befehle behalten bei Nachrichten ohne Argumente beide Trennkommas:

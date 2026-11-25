@@ -185,4 +185,17 @@ test('guide cancellation and reopening start at overview',function()
     adapter.run('OSCHELP'); adapter.run('OSCHELP')
     assert(calls==2 and writes()==0)
 end)
+test('property readback accepts explicit boolean encodings and rejects wrong states',function()
+    for _,v in ipairs({true,1,'1','Yes','true'}) do
+        assert(core.propertyMatches('Yes',v) and not core.propertyMatches('No',v))
+    end
+    for _,v in ipairs({false,0,'0','No','false'}) do
+        assert(core.propertyMatches('No',v) and not core.propertyMatches('Yes',v))
+    end
+    for _,v in ipairs({'unknown','',2}) do
+        assert(not core.propertyMatches('Yes',v) and not core.propertyMatches('No',v))
+    end
+    assert(not core.propertyMatches('No',nil))
+    assert(core.propertyMatches(18,'18.0') and not core.propertyMatches(18,'19'))
+end)
 print(count..' Lua test groups passed')

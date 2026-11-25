@@ -11,7 +11,17 @@ return function()
     end
     function methods:PropertyCount() return #self.schema end
     function methods:PropertyName(i) return self.schema[i+1] end
-    function methods:Get(k) assert(self.allowed[k],'Unknown property '..k); return self.props[k] end
+    function methods:Get(k)
+        assert(self.allowed[k],'Unknown property '..k)
+        local v=self.props[k]
+        if k=='Enabled' or k=='Execute' or k=='AddToCmdline' then
+            if m.booleanReadback=='invalid' then return 'unrecognized' end
+            if m.booleanReadback=='numeric' then return v=='Yes' and 1 or 0 end
+            if m.booleanReadback=='text' then return v end
+            return v=='Yes' -- Native boolean, as observed on the user's MA.
+        end
+        return v
+    end
     function methods:Set(k,v)
         assert(self.allowed[k],'Unknown property '..k)
         if m.failProperty==k then error('Injected property failure: '..k) end

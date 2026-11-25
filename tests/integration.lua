@@ -204,4 +204,18 @@ test('zero-argument OSC preserves empty type and payload fields',function()
         assert(#messages[1].arguments==0)
     end
 end)
+test('boolean readback resumes partial install without adopting foreign objects',function()
+    for _,mode in ipairs({'boolean','numeric','text'}) do
+        local m=mock(); m.booleanReadback='invalid'
+        local a=adapter(m)
+        rejects(function() a.install() end)
+        local macro=m.dp.Macros[501]
+        assert(macro and m.vars.QLC_V1_owned_complete==0)
+        m.booleanReadback=mode
+        a.install(); a.install()
+        assert(m.dp.Macros[501]==macro and #macro:Children()==1)
+        assert(m.vars.QLC_V1_owned_complete==1 and #m.dp.Layouts[200]:Children()==12)
+        noOSC(m)
+    end
+end)
 print(count..' pool/transport integration test groups passed (mocked MA)')
