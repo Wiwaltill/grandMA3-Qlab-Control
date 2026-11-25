@@ -1,6 +1,6 @@
 -- Runtime adapter. Unverified writes/transmission deliberately fail closed.
 local M={}
-function M.new(core, api)
+function M.new(core, api, guide)
     local self={}
     local prefix='QLC_V1_'
     -- Stable storage keys and command tokens remain language-independent.
@@ -20,17 +20,25 @@ function M.new(core, api)
         return core.config(values)
     end
     function self.oscHelp()
-        local c=self.load()
-        api.MessageBox({title='OSC manuell einrichten',
-            message='MA: Menü > In & Out > OSC. Eigene freie Zeile verwenden.\n'..
-            'Destination IP = '..(c.destination~='' and c.destination or 'IP-Adresse des QLab-Macs')..
-            '; Mode = UDP; Port = '..c.port..'; Prefix leer; Send Command = Yes.\n'..
-            'MA-Netzwerkschnittstelle prüfen. Enable Output erst nach Prüfung aller bestehenden OSC-Zeilen aktivieren.\n'..
-            'Im Plugin: MA-OSC-Zeilennummer = '..c.output..' (Nummer derselben Zeile).\n'..
-            'QLab: Workspace Settings > Network > OSC Access: OSC einschalten, passenden Port und unter No Passcode nur Control erlauben (isoliertes Show-Netz; keine Passcode-Anmeldung im Plugin).\n'..
-            'Mac und MA müssen sich im selben Show-Netz erreichen. Bei mehreren Workspaces eigene Ports verwenden.\n'..
-            'Keine automatische OSC-Konfiguration. Die Plugin-OSC-Ausgabe ist in diesem Entwicklungsstand noch gesperrt.',
-            commands={{value=0,name='Schließen'}}})
+        local pages=guide.pages(self.load())
+        local index=1
+        while true do
+            local commands={{value=0,name='Schließen'}}
+            if index>1 then commands[#commands+1]={value=1,name='Zurück'} end
+            if index<#pages then commands[#commands+1]={value=2,name='Weiter'} end
+            local progress={}
+            for i=1,#pages do progress[i]=i==index and '[ '..i..' ]' or tostring(i) end
+            local r=api.MessageBox({
+                title='OSC-Anleitung  |  '..index..' / '..#pages..'  —  '..pages[index].title,
+                icon='object_smart',backColor='Window.Plugins',
+                titleTextColor='Global.Text',messageTextColor='Global.Text',
+                message=table.concat(progress,'    ')..'\n\n'..pages[index].message,
+                commands=commands})
+            if not r or not r.success or r.result==0 then return end
+            if r.result==1 and index>1 then index=index-1
+            elseif r.result==2 and index<#pages then index=index+1
+            else return end
+        end
     end
     local function read(key) return api.GetVar(api.GlobalVars(),prefix..key) end
     local function write(key,value)

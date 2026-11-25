@@ -1,6 +1,6 @@
 # OSC zwischen grandMA3 und QLab einrichten
 
-Stand: 0.1.0-dev.3, Ziel grandMA3 2.5.1.1 / QLab 5.
+Stand: 0.1.0-dev.4, Ziel grandMA3 2.5.1.1 / QLab 5.
 **Die Verbindung wird manuell eingerichtet. Die OSC-Ausgabe des Plugins bleibt
 in diesem Entwicklungsstand gesperrt.** Auch eine korrekt eingerichtete Verbindung
 führt daher derzeit noch keinen Plugin-Transportbefehl aus.
@@ -8,6 +8,13 @@ führt daher derzeit noch keinen Plugin-Transportbefehl aus.
 Im Plugin öffnet **OSC-Anleitung** die Kurzhilfe. Dieser Knopf schließt die
 Eingabe ohne Speichern. Vorher geänderte Werte zuerst mit **Speichern** übernehmen.
 Die Hilfe lässt sich auch mit `Plugin "QLab Control" "OSCHELP"` öffnen.
+
+Die native Anleitung führt mit **Weiter** und **Zurück** durch fünf Seiten:
+Überblick, QLab, MA-Ausgang, Plugin-Werte und Abschlussübersicht. Titel und
+Schrittanzeige zeigen die aktuelle Position. **Schließen** beendet sie jederzeit.
+Die angezeigten Werte stammen aus den gespeicherten Einstellungen; die Übersicht
+bestätigt keine Verbindung. Die Darstellung auf echten MA-Displays ist noch
+manuell zu prüfen.
 
 ## 1. QLab vorbereiten
 

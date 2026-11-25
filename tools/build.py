@@ -8,24 +8,26 @@ from zipfile import ZipFile, ZipInfo, ZIP_DEFLATED
 import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = '0.1.0-dev.3'
+VERSION = '0.1.0-dev.4'
 
 def build():
     out = ROOT / 'dist'
     out.mkdir(exist_ok=True)
     core = (ROOT / 'src/core.lua').read_text()
     adapter = (ROOT / 'src/ma.lua').read_text()
+    guide = (ROOT / 'src/guide.lua').read_text()
     source = ('-- QLab Control '+VERSION+'; development build, not console validated.\n'
               'local core=(function()\n'+core+'\nend)()\n'
               'local adapter=(function()\n'+adapter+'\nend)()\n'
+              'local guide=(function()\n'+guide+'\nend)()\n'
               'return function(display_handle, argument)\n'
-              ' local ok,err=pcall(function() adapter.new(core,_G).run(argument) end)\n'
+              ' local ok,err=pcall(function() adapter.new(core,_G,guide).run(argument) end)\n'
               ' if not ok then ErrPrintf("QLab Control: %s",tostring(err)) end\n'
               'end\n')
     lua = out / 'QLab Control.lua'
     lua.write_text(source)
     root = ET.Element('GMA3', DataVersion='2.5.1.1')
-    plugin = ET.SubElement(root, 'UserPlugin', Name='QLab Control', Version='0.1.0.3')
+    plugin = ET.SubElement(root, 'UserPlugin', Name='QLab Control', Version='0.1.0.4')
     ET.SubElement(plugin, 'ComponentLua', Name='QLab Control', FileName=lua.name)
     ET.indent(root, space='    ')
     xml = out / 'QLab Control.xml'

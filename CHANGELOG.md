@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.1.0-dev.4
+
+- OSC-Anleitung als fünfseitiger nativer Assistent mit Fortschrittsanzeige,
+  Plugin-Fensterrahmen, Symbol und Zurück-/Weiter-Navigation gestaltet.
+- Kurze Abschnitte für QLab, MA und Plugin; Abschlussübersicht zeigt die
+  gespeicherten Verbindungswerte ohne Verbindungsbestätigung.
+- Navigation, Abbruch und unveränderte Einstellungen mit Mocks geprüft.
+  Visuelle Prüfung auf MA-Displays steht aus.
+
 ## 0.1.0-dev.3
 
 - Deutsche Setup-Felder, Dialoge, Bestätigungen, Fehlermeldungen und Layout-Texte.

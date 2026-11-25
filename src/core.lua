@@ -1,5 +1,5 @@
 -- Pure Lua: no grandMA globals, I/O, or network access.
-local M = {version = '0.1.0-dev.3'}
+local M = {version = '0.1.0-dev.4'}
 local transport = {START='start', STOP='stop', PAUSE='pause', RESUME='resume'}
 local special = {IDLE='idle', BLACKOUT='blackout'}
 local other = {SETUP=true, SELECT=true, NEXT=true, PANIC=true, RESTART=true,
