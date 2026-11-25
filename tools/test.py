@@ -21,7 +21,7 @@ components=plugin.findall('ComponentLua')
 assert len(components)==1
 filename=components[0].attrib['FileName']
 assert filename=='QLab Control.lua'
-with ZipFile(root/'dist/QLab-Control-0.1.0-dev.2-import.zip') as archive:
+with ZipFile(root/'dist/QLab-Control-0.1.0-dev.3-import.zip') as archive:
     base='gma3_library/datapools/plugins/'
     assert archive.read(base+filename)==(root/'dist'/filename).read_bytes()
     assert archive.read(base+'QLab Control.xml')==(root/'dist/QLab Control.xml').read_bytes()

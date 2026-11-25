@@ -8,7 +8,7 @@ from zipfile import ZipFile, ZipInfo, ZIP_DEFLATED
 import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = '0.1.0-dev.2'
+VERSION = '0.1.0-dev.3'
 
 def build():
     out = ROOT / 'dist'
@@ -25,7 +25,7 @@ def build():
     lua = out / 'QLab Control.lua'
     lua.write_text(source)
     root = ET.Element('GMA3', DataVersion='2.5.1.1')
-    plugin = ET.SubElement(root, 'UserPlugin', Name='QLab Control', Version='0.1.0.2')
+    plugin = ET.SubElement(root, 'UserPlugin', Name='QLab Control', Version='0.1.0.3')
     ET.SubElement(plugin, 'ComponentLua', Name='QLab Control', FileName=lua.name)
     ET.indent(root, space='    ')
     xml = out / 'QLab Control.xml'

@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.0-dev.3
+
+- Deutsche Setup-Felder, Dialoge, Bestätigungen, Fehlermeldungen und Layout-Texte.
+  Technische Befehle und vorhandene Show-Variablen bleiben kompatibel.
+- OSC-Kurzhilfe im Setup und über OSCHELP; ausführliche deutsche Netzwerkanleitung.
+- Keine automatische Änderung der MA-OSC-Konfiguration: sichere Schreibzugriffe
+  und Konfliktbehandlung auf 2.5.1.1 sind weiterhin nicht verifiziert.
+
 ## 0.1.0-dev.2
 
 - MA-XML-Einstieg mit externer LuaComponent ergänzt; ZIP verwendet die native

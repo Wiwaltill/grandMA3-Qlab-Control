@@ -1,6 +1,6 @@
 # Roadmap
 ## V1
-Current milestone: 0.1.0-dev.2 import preview. Parser/config/state, mock-tested
+Current milestone: 0.1.0-dev.3 import preview. Parser/config/state, mock-tested
 runtime boundaries, graphical setup and complete layout/pool data plan exist.
 Steps 1, 3 and 4 remain incomplete: 2.5.1.1 smoke tests, native export fixtures,
 pool mutation/ownership implementation and argument-free SendOSC encoding are

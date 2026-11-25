@@ -57,7 +57,7 @@ test('layout plan has distinct slots and required ordering',function()
         local key=o.kind..o.id; assert(not seen[key]); seen[key]=true
     end
     assert(core.buttons[6][2]=='NEXT' and core.buttons[7][1]=='PAUSENGRAFIK')
-    assert(p.status.text=='LAST REQUESTED: —')
+    assert(p.status.text=='ZULETZT ANGEFORDERT: —')
 end)
 test('full preflight rejects foreign or replaced objects',function()
     local p=core.plan(config)
@@ -67,6 +67,13 @@ test('full preflight rejects foreign or replaced objects',function()
     assert(core.preflight(p,api,{['Macro:511']='foreign'}))
     rejects(function() core.preflight(p,api,{['Macro:511']='old identity'}) end)
 end)
+local function uiValues(c)
+    return {['01 QLab-Ziel (IP, optional)']=c.destination,
+        ['02 QLab-OSC-Port']=tostring(c.port), ['03 MA-OSC-Zeilennummer']=tostring(c.output),
+        ['04 Pausengrafik-Cue']=c.idle, ['05 Schwarzbild-Cue']=c.blackout,
+        ['06 Layout-Nummer']=tostring(c.layout), ['07 Erste Makro-Nummer']=tostring(c.macro),
+        ['08 Erste Appearance-Nummer']=tostring(c.appearance)}
+end
 local function mock(result)
     local vars={}; local writes=0
     return {GlobalVars=function() return vars end,
@@ -77,12 +84,12 @@ local function mock(result)
         Cmd=function() error('Unexpected command execution') end},vars,function() return writes end
 end
 test('setup saves only validated configuration',function()
-    local api,vars=mock({success=true,result=1,inputs=config})
+    local api,vars=mock({success=true,result=1,inputs=uiValues(config)})
     ma.new(core,api).run('SETUP')
     assert(vars.QLC_V1_configured==1 and vars.QLC_V1_output==1)
 end)
 test('setup cancel and invalid input never write',function()
-    for _,r in ipairs({{success=true,result=0},{success=true,result=1,inputs={port='invalid'}}}) do
+    for _,r in ipairs({{success=true,result=0},{success=true,result=1,inputs={['02 QLab-OSC-Port']='invalid'}}}) do
         local api,_,writes=mock(r)
         pcall(function() ma.new(core,api).run('SETUP') end)
         assert(writes()==0)
@@ -95,10 +102,55 @@ test('plan and lifecycle gates never execute MA commands',function()
     assert(writes()==0)
 end)
 test('configured transport fails closed without changing state',function()
-    local api,vars,writes=mock({success=true,result=1,inputs=config})
+    local api,vars,writes=mock({success=true,result=1,inputs=uiValues(config)})
     local adapter=ma.new(core,api); adapter.run('SETUP')
     local before=writes()
     for _,a in ipairs({'START 1','PANIC','NEXT','TEST 999'}) do rejects(function() adapter.run(a) end) end
     assert(writes()==before and vars.QLC_V1_song==nil)
+end)
+test('German labels map to stable storage and preserve old values',function()
+    local c=core.config({destination='qlab.local',port=53100,output=4,idle='0900.20',blackout='901.2',
+        macro=600,appearance=700,layout=300})
+    local api,vars=mock({success=true,result=1,inputs=uiValues(c)})
+    ma.new(core,api).run('SETUP')
+    for k,v in pairs(c) do assert(vars['QLC_V1_'..k]==v) end
+    local original=api.MessageBox
+    api.MessageBox=function(box)
+        assert(box.title=='QLab Control — Einstellungen')
+        assert(#box.inputs==8 and box.inputs[1].value=='qlab.local')
+        assert(box.inputs[3].value=='4')
+        return {success=true,result=0}
+    end
+    ma.new(core,api).run('SETUP')
+end)
+test('German cue selection preserves decimal strings',function()
+    local api,vars=mock({success=true,result=1,inputs={['Cue-Nummer']='001.20'}})
+    ma.new(core,api).run('SELECT')
+    assert(vars.QLC_V1_selected=='001.20')
+end)
+test('OSC help works before setup and never writes',function()
+    local api,_,writes=mock(nil)
+    local seen=false
+    api.MessageBox=function(box)
+        assert(box.title=='OSC manuell einrichten')
+        assert(box.message:find('53000') and box.message:find('UDP'))
+        seen=true
+    end
+    ma.new(core,api).run('OSCHELP')
+    assert(seen and writes()==0)
+    rejects(function() core.parse('OSCHELP 1') end)
+end)
+test('OSC help button does not save setup or transmit',function()
+    local api,_,writes=mock(nil); local calls=0
+    api.MessageBox=function(box)
+        calls=calls+1
+        if calls==1 then
+            assert(box.commands[2].name=='OSC-Anleitung')
+            return {success=true,result=2}
+        end
+        assert(box.title=='OSC manuell einrichten')
+    end
+    ma.new(core,api).run('SETUP')
+    assert(calls==2 and writes()==0)
 end)
 print(count..' Lua test groups passed')

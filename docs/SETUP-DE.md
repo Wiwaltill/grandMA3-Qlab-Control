@@ -1,6 +1,11 @@
 # Entwicklungsstand installieren und prüfen
 
-Dies ist **0.1.0-dev.2**, eine importierbare Entwicklungsvorschau, kein fertiges
+Die Oberfläche ist deutsch. Die Schritt-für-Schritt-Anleitung für Netzwerk,
+QLab-Rechte und MA-OSC steht in [OSC-ANLEITUNG-DE.md](OSC-ANLEITUNG-DE.md).
+Im Setup öffnet **OSC-Anleitung** die Kurzhilfe ohne Speichern. Die technischen
+Befehle (`SETUP`, `START`, `SELECT` usw.) bleiben unverändert.
+
+Dies ist **0.1.0-dev.3**, eine importierbare Entwicklungsvorschau, kein fertiges
 V1-Release. OSC, automatische Pool-Installation, Update und Cleanup sind noch
 gesperrt. Testbar sind Import, Plugin-Aufruf, grafisches Setup, Cue-Auswahl
 und die Ausgabe des Installationsplans.
@@ -9,7 +14,7 @@ und die Ausgabe des Installationsplans.
 2. Die lokal bereitgestellten Dateien `QLab Control.xml` und `QLab Control.lua`
    liegen zusammen in `~/MALightingTechnology/gma3_library/datapools/plugins/`.
    Alternativ `python3 tools/build.py` ausführen und den Inhalt von
-   `dist/QLab-Control-0.1.0-dev.2-import.zip` in den MA-Datenordner entpacken.
+   `dist/QLab-Control-0.1.0-dev.3-import.zip` in den MA-Datenordner entpacken.
    Das ZIP enthält bereits `gma3_library/datapools/plugins/`.
 3. Einen **freien** Plugin-Pool-Slot bearbeiten, **Import** wählen, das lokale
    Laufwerk und **QLab Control.xml** auswählen und importieren. Editor schließen
