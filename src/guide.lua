@@ -13,7 +13,7 @@ function M.pages(c)
             '03  Werte im Plugin zuordnen',
             '',
             'Diese Anleitung ändert keine Einstellungen.',
-            'Entwicklungsstand: Plugin-OSC-Ausgabe noch gesperrt.'},'\n')},
+            'Ein echter OSC-Test ist nur nach deiner Bestätigung möglich.'},'\n')},
         {title='QLab vorbereiten',message=table.concat({
             'IN QLAB ÖFFNEN',
             'Workspace Settings → Network → OSC Access',
@@ -57,8 +57,8 @@ function M.pages(c)
             'MA-Interface • Enable Output • QLab-Control-Recht',
             '',
             'AKTUELL TESTBAR',
-            'Import, Einstellungen, Cue-Auswahl und Installationsplan.',
-            'QLab-Starttests sind in diesem Entwicklungsstand gesperrt.',
+            'Installation, Cue-Auswahl und ausdrücklich bestätigter OSC-Test.',
+            'Einstellungen → OSC-Test → eigenen Test-Cue bestätigen.',
             'Diese Übersicht bestätigt keine Verbindung oder Wiedergabe.'},'\n')}
     }
 end

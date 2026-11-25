@@ -1,5 +1,5 @@
 -- Pure Lua: no grandMA globals, I/O, or network access.
-local M = {version = '0.1.0-dev.4'}
+local M = {version = '0.2.0-beta.1'}
 local transport = {START='start', STOP='stop', PAUSE='pause', RESUME='resume'}
 local special = {IDLE='idle', BLACKOUT='blackout'}
 local other = {SETUP=true, SELECT=true, NEXT=true, PANIC=true, RESTART=true,
@@ -10,6 +10,7 @@ function M.cue(s)
         (s:match('^%d+$') or s:match('^%d+%.%d+$')), 'Cue-Nummer als Ziffern eingeben, z. B. 101.2')
     return s -- Never convert to a number: preserve 001 and 101.20.
 end
+
 
 function M.parse(s)
     assert(type(s)=='string' and #s<=128, 'Ungültiger Befehl')
@@ -133,4 +134,21 @@ function M.request(command, config, state, confirmed)
     nextState.lastAction=a; nextState.lastCue=target
     return {{address=address,arguments={}}},nextState
 end
+-- Address-only SendOSC is an integration-test candidate; MA's manual does
+-- not explicitly describe the zero-argument case. Never add a dummy payload.
+function M.oscCommand(output,message)
+    local index=integer(output,1,9999)
+    assert(type(message)=='table' and type(message.arguments)=='table' and #message.arguments==0,
+        'Nur OSC-Nachrichten ohne Argumente erlaubt')
+    local a=message.address
+    assert(type(a)=='string' and
+        (a=='/go' or a=='/panic' or a:match('^/cue/%d+/[a-z]+$') or a:match('^/cue/%d+%.%d+/[a-z]+$')),
+        'Ungültige OSC-Adresse')
+    if a~='/go' and a~='/panic' then
+        local verb=a:match('/([a-z]+)$')
+        assert(verb=='start' or verb=='stop' or verb=='pause' or verb=='resume','OSC-Aktion nicht erlaubt')
+    end
+    return 'SendOSC '..index..' '..M.quote(a)
+end
+
 return M

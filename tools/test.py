@@ -9,6 +9,7 @@ root=Path(__file__).resolve().parents[1]
 os.chdir(root)
 lua=LuaRuntime()
 lua.execute((root/'tests/run.lua').read_text())
+lua.execute((root/'tests/integration.lua').read_text())
 component=lua.execute((root/'dist/QLab Control.lua').read_text())
 assert callable(component)
 print('Generated Lua component loads in Lua 5.4')
@@ -21,7 +22,7 @@ components=plugin.findall('ComponentLua')
 assert len(components)==1
 filename=components[0].attrib['FileName']
 assert filename=='QLab Control.lua'
-with ZipFile(root/'dist/QLab-Control-0.1.0-dev.4-import.zip') as archive:
+with ZipFile(root/'dist/QLab-Control-0.2.0-beta.1-import.zip') as archive:
     base='gma3_library/datapools/plugins/'
     assert archive.read(base+filename)==(root/'dist'/filename).read_bytes()
     assert archive.read(base+'QLab Control.xml')==(root/'dist/QLab Control.xml').read_bytes()
