@@ -96,10 +96,12 @@ function M.new(core, api, guide, poolModule, plugin)
         local r=api.MessageBox({title='QLab Control '..core.version..' — Einstellungen',
             message='Speichern / Installieren übernimmt die Eingaben. Netzwerkdaten ändern keine MA-OSC-Route. Anleitung und OSC-Test verwenden die bereits gespeicherten Werte.',
             commands={{value=1,name='Speichern'},{value=2,name='OSC-Anleitung'},
-                {value=3,name='Layout installieren'},{value=4,name='OSC-Test'},{value=0,name='Abbrechen'}},inputs=inputs,
+                {value=3,name='Layout installieren'},{value=4,name='OSC-Test'},
+                {value=5,name='Neustart zuordnen'},{value=0,name='Abbrechen'}},inputs=inputs,
             autoCloseOnInput=false})
         if r and r.success and r.result==2 then return self.oscHelp() end
         if r and r.success and r.result==4 then return self.run('TEST') end
+        if r and r.success and r.result==5 then return self.run('RESTARTSETUP') end
         if not r or not r.success or (r.result~=1 and r.result~=3) then return end
         local valid=decode(r.inputs)
         local installed=api.GetVar(api.GlobalVars(),'QLC_V1_owned_scope')
@@ -128,6 +130,24 @@ function M.new(core, api, guide, poolModule, plugin)
         for _,o in ipairs(p.objects) do api.Printf('%s %d: %s',o.kind,o.id,o.label) end
         return p
     end
+    local function restartKey(song) return 'restartFor_'..core.cue(song):gsub('%.','_') end
+    function self.restartSetup(song)
+        if not song then
+            api.MessageBox({title='Song auswählen',message='Zuerst CUE AUSWÄHLEN verwenden, danach NEUSTART erneut drücken.',
+                commands={{value=0,name='Schließen'}}})
+            return
+        end
+        local r=api.MessageBox({title='Neustart für Song '..song,
+            message='In QLab einen eigenen Hilfscue vorbereiten und lokal testen, der nur diesen Song von vorn startet.\n'..
+                'Dessen Cue-Nummer hier zuordnen. Speichern sendet kein OSC.\n'..
+                'Danach startet NEUSTART ausschließlich diesen Hilfscue; die Songreferenz bleibt erhalten.',
+            inputs={{name='QLab-Neustart-Hilfscue',value=read(restartKey(song)) or ''}},
+            commands={{value=1,name='Zuordnung speichern'},{value=0,name='Abbrechen'}},autoCloseOnInput=false})
+        if not r or not r.success or r.result~=1 then return end
+        local helper=core.cue(r.inputs['QLab-Neustart-Hilfscue'])
+        assert(helper~=song,'Der Neustart-Hilfscue muss eine andere Nummer als der Song haben')
+        write(restartKey(song),helper)
+    end
     function self.run(argument)
         local command=core.parse((not argument or argument:match('^%s*$')) and 'SETUP' or argument)
         if command.action=='OSCHELP' then return self.oscHelp() end
@@ -141,6 +161,15 @@ function M.new(core, api, guide, poolModule, plugin)
             return self.lifecycle(command.action)
         end
         assert(tonumber(read('configured'))==1,'Zuerst die Einstellungen mit SETUP speichern')
+        local current=state()
+        local config=self.load()
+        if command.action=='RESTART' or command.action=='RESTARTSETUP' then
+            local song=command.cue or current.selected or current.song
+            if song then config.restartCue=read(restartKey(song)) end
+            if command.action=='RESTARTSETUP' or not config.restartCue or config.restartCue=='' then
+                return self.restartSetup(song)
+            end
+        end
         local installed=api.GetVar(api.GlobalVars(),'QLC_V1_owned_scope')
         if installed and installed~='' then poolAdapter().preflight() end
         if command.action=='TEST' and not command.cue then
@@ -152,7 +181,7 @@ function M.new(core, api, guide, poolModule, plugin)
             command.cue=core.cue(r.inputs['Test-Cue'])
         end
         -- Validate before displaying a destructive-action confirmation.
-        local messages,nextState=core.request(command,self.load(),state(),true)
+        local messages,nextState=core.request(command,config,current,true)
         local confirmed=false
         if command.action=='PANIC' or command.action=='NEXT' or command.action=='TEST' then
             local messages={PANIC='NOTSTOPP blendet ALLE Cues in allen auf diesem Port empfangenden Workspaces aus und stoppt sie. Erneutes Auslösen während der Blende stoppt sofort. Fortfahren?',

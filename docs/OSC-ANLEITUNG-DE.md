@@ -1,6 +1,6 @@
 # OSC zwischen grandMA3 und QLab einrichten
 
-Stand: 0.2.0-beta.7, Ziel grandMA3 2.5.1.1 / QLab 5.
+Stand: 0.2.0-beta.8, Ziel grandMA3 2.5.1.1 / QLab 5.
 **Die Verbindung wird manuell eingerichtet.** Ein echter OSC-Test ist jetzt
 über den Setup-Knopf **OSC-Test** möglich. Die korrigierte SendOSC-Syntax mit leeren Typ-/Wertfeldern ist
 auf deinem Zielsystem noch zu verifizieren; der Test bestätigt keine Wiedergabe.

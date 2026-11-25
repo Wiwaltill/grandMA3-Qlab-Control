@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.2.0-beta.8
+
+- NEUSTART kann pro Song einen eigenen QLab-Hilfscue starten. Ohne Zuordnung
+  öffnet sich die Einrichtung, ohne OSC zu senden; kein absichtlicher Fehlerdialog mehr.
+- Zuordnung über erstes NEUSTART, Setup-Knopf oder RESTARTSETUP [Song-Cue].
+- Auswahl und Songreferenz bleiben beim Start des Hilfscues erhalten. Keine
+  globale Stop-Aktion, kein UDP-Stop/Start-Doppelsenden und keine Wartezeitannahme.
+- QLab-Hilfscue muss vom Anwender passend zum Song programmiert und getestet werden.
+
 ## 0.2.0-beta.7
 
 - Enum-Eigenschaften werden bei abweichendem Rohwert zusätzlich mit der

@@ -1,6 +1,6 @@
 # QLab Control installieren und testen
 
-Version **0.2.0-beta.7**, Ziel grandMA3 **2.5.1.1** / QLab **5**.
+Version **0.2.0-beta.8**, Ziel grandMA3 **2.5.1.1** / QLab **5**.
 Installer und Transport sind implementiert; Laufzeittests auf MA/QLab stehen aus.
 Eine gesicherte Testshow verwenden. Während der Installation keine anderen
 Nutzer die betroffenen Pool-Bereiche bearbeiten lassen.
@@ -9,16 +9,16 @@ Nutzer die betroffenen Pool-Bereiche bearbeiten lassen.
 
 1. `QLab Control.xml` und `QLab Control.lua` liegen lokal gemeinsam in
    `~/MALightingTechnology/gma3_library/datapools/plugins/`.
-   Alternativ das ZIP `QLab-Control-0.2.0-beta.7-import.zip` in den MA-Datenordner
+   Alternativ das ZIP `QLab-Control-0.2.0-beta.8-import.zip` in den MA-Datenordner
    entpacken; es enthält die passende `gma3_library/datapools/plugins/`-Struktur.
 2. Einen freien Plugin-Slot bearbeiten, **Import → lokales Laufwerk →
    QLab Control.xml** wählen. Einen bisherigen Teststand gezielt aktualisieren.
    Plugin antippen.
    Das XML enthält ab beta.2 den vollständigen Lua-Code. Die separate Lua-Datei
    bleibt zum Nachlesen enthalten, wird für diesen Import aber nicht benötigt.
-   Beim Start muss `QLab Control 0.2.0-beta.7 gestartet` in der Command Line
+   Beim Start muss `QLab Control 0.2.0-beta.8 gestartet` in der Command Line
    History erscheinen. Fehlt die Meldung, ist der neue Code noch nicht gestartet.
-   Im Einstellungsfenster muss ebenfalls **0.2.0-beta.7** im Titel stehen.
+   Im Einstellungsfenster muss ebenfalls **0.2.0-beta.8** im Titel stehen.
    Dateien auf der Festplatte zu ersetzen aktualisiert einen bereits im Showfile
    gespeicherten Plugin-Code nicht automatisch: dafür das XML neu importieren.
 3. QLab-Ziel, Port und MA-OSC-Zeilennummer eintragen. Ziel/Port sind Informationen;
@@ -83,9 +83,26 @@ Explizite START-Befehle in die CMD-Spalte der passenden Licht-Cues setzen.
 Gewöhnliche Licht-Cues brauchen keinen Video-Befehl. IDLE und BLACKOUT starten
 Grafik-Cues, ohne die Songreferenz zu verlieren. NEXT löst nach Bestätigung
 QLab-GO an der aktuellen Abspielposition aus. PANIC betrifft alle auf dem Port
-empfangenden Workspaces und verlangt Bestätigung. NEUSTART bleibt bis zur
-Definition verlässlicher QLab-Gruppensemantik gesperrt. Übergänge, Fades und
+empfangenden Workspaces und verlangt Bestätigung. NEUSTART startet einen eigenen, pro Song zugeordneten QLab-Hilfscue (siehe unten). Übergänge, Fades und
 Stopps vorheriger Gruppen werden in QLab programmiert.
+
+## NEUSTART einem QLab-Hilfscue zuordnen
+
+1. In QLab einen eigenen Hilfscue mit anderer Nummer vorbereiten. Er soll nur
+   den betreffenden Song von vorn starten. Die Neustartlogik innerhalb QLab
+   programmieren und dort mit dem verwendeten Gruppenmodus testen.
+2. Im MA-Layout den Song auswählen und **NEUSTART** drücken. Ohne Zuordnung
+   erscheint ein Eingabefenster für die Nummer dieses Hilfscues.
+3. **Zuordnung speichern** sendet kein OSC. Erst das nächste Drücken von
+   **NEUSTART** fordert den Hilfscue mit genau einer `/cue/{Hilfscue}/start`-
+   Nachricht an. STOPP/PAUSE/FORTSETZEN bleiben auf den ursprünglichen Song gerichtet.
+4. Eine Zuordnung später über **Einstellungen → Neustart zuordnen** oder
+   `Plugin "QLab Control" "RESTARTSETUP 101.2"` bearbeiten.
+
+Die Zuordnung ist pro Song als Zeichenfolge gespeichert. `101.2` und `101.20`
+bleiben getrennte IDs. Das Plugin erzeugt keine QLab-Cues und ändert dort
+keine Second-Trigger-Einstellungen. Der Hilfscue muss separat vorhanden sein.
+Eine universelle Neustartlogik für beliebige QLab-Gruppen ist damit nicht behauptet.
 
 ## Entfernen und Pool-Nummern ändern
 

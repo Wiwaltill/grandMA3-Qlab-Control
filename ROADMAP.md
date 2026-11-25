@@ -1,11 +1,12 @@
 # Roadmap
 ## V1
-Current milestone: 0.2.0-beta.7 integration test build. Automatic pool
+Current milestone: 0.2.0-beta.8 integration test build. Automatic pool
 installation, ownership journal, repeat install/update, confirmed uninstall,
 native layout/status and explicit OSC test are implemented and mock-tested.
 Steps 1 and 5 remain open on the target system: import round-trip, zero-argument
 SendOSC packet/QLab test, visual layout inspection and save/reload identity checks.
-Restart is still disabled. This is not a validated V1 production release.
+Restart now dispatches a configured helper cue per song; helper behavior must be
+programmed and verified in QLab. This is not a validated V1 production release.
 
 1. Validate MA 2.5.1.1 plugin entry point, argument dispatch, SendOSC encoding and QLab 5 OSC addresses/types with official docs and a minimal smoke test. Earlier chat offered two alternative syntaxes; neither has been hardware-tested.
 2. Build tested command parser, configuration and state model; implement transport adapter.

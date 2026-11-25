@@ -237,4 +237,38 @@ test('unknown enum without Edit role fails safely rather than trusting its index
     assert(m.vars.QLC_V1_owned_complete==0)
     noOSC(m)
 end)
+test('restart mapping sends only its helper cue and retains the song target',function()
+    local m=mock(); local app=configured(m)
+    app.run('SELECT 101.20')
+    m.respond=function() return {success=true,result=1,inputs={['QLab-Neustart-Hilfscue']='9101.2'}} end
+    app.run('RESTART')
+    assert(#m.commands==0 and m.vars.QLC_V1_restartFor_101_20=='9101.2')
+    app.run('RESTART')
+    assert(#m.commands==1 and m.commands[1]=='SendOSC 1 "/cue/9101.2/start,,"')
+    assert(m.vars.QLC_V1_selected=='101.20' and m.vars.QLC_V1_song=='101.20')
+    assert(m.vars.QLC_V1_lastAction=='RESTART' and m.vars.QLC_V1_lastCue=='9101.2')
+    app.run('IDLE'); app.run('STOP')
+    assert(m.commands[3]=='SendOSC 1 "/cue/101.20/stop,,"')
+end)
+test('restart setup cancellation and malformed helpers never send',function()
+    local m=mock(); local app=configured(m)
+    m.respond=function() return {success=true,result=0} end
+    app.run('RESTART'); app.run('RESTARTSETUP 101')
+    assert(#m.commands==0 and not m.vars.QLC_V1_restartFor_101)
+    for _,helper in ipairs({'101','1;Delete','selected','/panic'}) do
+        m.respond=function() return {success=true,result=1,inputs={['QLab-Neustart-Hilfscue']=helper}} end
+        rejects(function() app.run('RESTARTSETUP 101') end)
+        assert(#m.commands==0 and not m.vars.QLC_V1_restartFor_101)
+    end
+end)
+test('restart mappings distinguish decimal strings and remain show-persistent',function()
+    local m=mock(); local app=configured(m)
+    for song,helper in pairs({['101']='9101',['101.2']='9102',['101.20']='9103'}) do
+        m.respond=function() return {success=true,result=1,inputs={['QLab-Neustart-Hilfscue']=helper}} end
+        app.run('RESTARTSETUP '..song)
+    end
+    local reopened=ma.new(core,m.api,guide,pools,m.plugin)
+    reopened.run('RESTART 101.20')
+    assert(#m.commands==1 and m.commands[1]=='SendOSC 1 "/cue/9103/start,,"')
+end)
 print(count..' pool/transport integration test groups passed (mocked MA)')

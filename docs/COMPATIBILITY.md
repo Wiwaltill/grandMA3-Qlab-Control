@@ -13,7 +13,7 @@ einige Lua-Seiten zeigen trotz 2.5-Pfad den Stand 2.2 an.
 | MA OSC | [SendOSC, MA 2.5](https://help.malighting.com/grandMA3/2.5/HTML/keyword_sendosc.html) | Typisierte Nachrichten dokumentiert; argumentfreie Nachricht nicht ausdrücklich belegt. Kein Ersatz mit erfundenem String-/Impulse-Argument |
 | QLab Transport | [OSC Dictionary v5](https://qlab.app/docs/v5/scripting/osc-dictionary-v5/) | Semantische Nachrichten `/cue/{number}/start`, `/stop`, `/pause`, `/resume`, `/go`, `/panic`; keine Argumente für diese Aktionen |
 | Netzwerk | [QLab OSC](https://qlab.app/docs/v5/networking/using-osc/) | Port und Rechte manuell konfigurieren; mehrere Workspaces am selben Port berücksichtigen |
-| Restart | QLab OSC Dictionary v5 | Kein behauptetes atomisches Restart; Stop/Start über UDP garantiert weder Reihenfolge noch Abschluss. Bis Integrationstest gesperrt |
+| Restart | QLab OSC Dictionary v5 | Kein behauptetes atomisches Restart; pro Song zugeordneter Hilfscue wird mit einer Start-Nachricht angefordert. Logik des Hilfscues in QLab testen |
 | XML / Pool-Adapter | [MA Plugins](https://help.malighting.com/grandMA3/2.5/HTML/plugins.html) | Export einer nativen 2.5.1.1-Referenz benötigt: Plugin mit LuaComponent, Layout mit Macro-Zuweisung, Appearance und Macro-Zeile. Pool-Adapter implementiert; interne Eigenschaften werden vor jedem Schreiben über PropertyCount/PropertyName geprüft und danach gelesen. Import-Roundtrip und Zielsystemtest offen |
 
 Die reinen Lua-Tests beweisen Parser, Zustandsmodell, Plan und Adapter-Grenzen.

@@ -1,9 +1,9 @@
 -- Pure Lua: no grandMA globals, I/O, or network access.
-local M = {version = '0.2.0-beta.7'}
+local M = {version = '0.2.0-beta.8'}
 local transport = {START='start', STOP='stop', PAUSE='pause', RESUME='resume'}
 local special = {IDLE='idle', BLACKOUT='blackout'}
 local other = {SETUP=true, SELECT=true, NEXT=true, PANIC=true, RESTART=true,
-    PLAN=true, OSCHELP=true, INSTALL=true, UPDATE=true, UNINSTALL=true, TEST=true}
+    PLAN=true, OSCHELP=true, RESTARTSETUP=true, INSTALL=true, UPDATE=true, UNINSTALL=true, TEST=true}
 
 function M.cue(s)
     assert(type(s)=='string' and #s<=64 and
@@ -21,7 +21,7 @@ function M.parse(s)
     action = action:upper()
     assert(transport[action] or special[action] or other[action], 'Unbekannter Befehl')
     local id = tail~='' and M.cue(tail) or nil
-    assert(not id or transport[action] or action=='SELECT' or action=='RESTART' or action=='TEST',
+    assert(not id or transport[action] or action=='SELECT' or action=='RESTART' or action=='RESTARTSETUP' or action=='TEST',
         'Dieser Befehl akzeptiert keine Cue-Nummer')
     return {action=action, cue=id}
 end
@@ -125,11 +125,14 @@ function M.request(command, config, state, confirmed)
         nextState.selected=M.cue(assert(command.cue,'SELECT benötigt eine Cue-Nummer'))
         return {},nextState
     end
-    if a=='RESTART' then
-        error('NEUSTART ist bis zur Prüfung der QLab-Cue-/Gruppenfunktion gesperrt. Einen eigenen QLab-Neustart-Cue verwenden.')
-    end
     local address
-    if transport[a] then
+    if a=='RESTART' then
+        local song=M.cue(assert(target,'Zuerst einen Song-Cue auswählen'))
+        target=M.cue(assert(config.restartCue,'Zuerst einen QLab-Neustart-Hilfscue zuordnen'))
+        assert(target~=song,'Der Neustart-Hilfscue muss eine andere Nummer als der Song haben')
+        address='/cue/'..target..'/start'
+        nextState.selected=song; nextState.song=song
+    elseif transport[a] then
         target=M.cue(assert(target,'Zuerst einen Song-Cue auswählen'))
         address='/cue/'..target..'/'..transport[a]
         nextState.selected=target
