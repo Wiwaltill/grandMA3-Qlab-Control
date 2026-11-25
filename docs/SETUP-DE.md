@@ -12,7 +12,7 @@ Nutzer die betroffenen Pool-Bereiche bearbeiten lassen.
    Alternativ das ZIP `QLab-Control-0.2.0-beta.4-import.zip` in den MA-Datenordner
    entpacken; es enthält die passende `gma3_library/datapools/plugins/`-Struktur.
 2. Einen freien Plugin-Slot bearbeiten, **Import → lokales Laufwerk →
-   QLab Control 0.2.0-beta.4.xml** wählen. Einen bisherigen Teststand gezielt aktualisieren.
+   QLab Control.xml** wählen. Einen bisherigen Teststand gezielt aktualisieren.
    Plugin antippen.
    Das XML enthält ab beta.2 den vollständigen Lua-Code. Die separate Lua-Datei
    bleibt zum Nachlesen enthalten, wird für diesen Import aber nicht benötigt.

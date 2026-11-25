@@ -2,7 +2,8 @@
 
 ## 0.2.0-beta.4
 
-- Eindeutig benannte Importdatei `QLab Control 0.2.0-beta.4.xml` ergänzt.
+- Einheitliche Importdatei `QLab Control.xml`; die zusätzliche versionierte
+  Beta-XML wurde auf Wunsch entfernt.
 - Einstellungs- und Fehlerfenster zeigen die Build-Version, damit ein weiterhin
   im Showfile gespeicherter Altstand sofort erkennbar ist.
 - Erneuter Screenshot mit tonumber an Zeile 297 entspricht dem alten

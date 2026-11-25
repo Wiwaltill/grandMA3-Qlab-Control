@@ -35,7 +35,7 @@ with ZipFile(root/'dist/QLab-Control-0.2.0-beta.4-import.zip') as archive:
     base='gma3_library/datapools/plugins/'
     assert archive.read(base+filename)==(root/'dist'/filename).read_bytes()
     assert archive.read(base+'QLab Control.xml')==(root/'dist/QLab Control.xml').read_bytes()
-    assert archive.read(base+'QLab Control 0.2.0-beta.4.xml')==(root/'dist/QLab Control.xml').read_bytes()
+    assert [n for n in archive.namelist() if n.endswith('.xml')]==[base+'QLab Control.xml']
     assert archive.read('LICENSE')==(root/'LICENSE').read_bytes()
     assert archive.testzip() is None
 print('Embedded XML source, Lua load, ZIP structure and license verified')

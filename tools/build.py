@@ -52,10 +52,8 @@ def build():
     ET.indent(root, space='    ')
     xml = out / 'QLab Control.xml'
     ET.ElementTree(root).write(xml, encoding='utf-8', xml_declaration=True)
-    versioned_xml=out / ('QLab Control '+VERSION+'.xml')
-    versioned_xml.write_bytes(xml.read_bytes())
     base='gma3_library/datapools/plugins/'
-    files = {base+lua.name: lua, base+xml.name: xml, base+versioned_xml.name: versioned_xml,
+    files = {base+lua.name: lua, base+xml.name: xml,
              'README.md': ROOT/'README.md',
              'LICENSE': ROOT/'LICENSE', 'CHANGELOG.md': ROOT/'CHANGELOG.md'}
     files.update({'docs/'+p.name:p for p in sorted((ROOT/'docs').glob('*.md'))})
