@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.2.0-beta.5
+
+- SendOSC-Befehle behalten bei Nachrichten ohne Argumente beide Trennkommas:
+  `/cue/999/start,,` statt `/cue/999/start`. Die bisherige Form wurde auf dem
+  Nutzer-onPC mit „Illegal value“ abgelehnt.
+- Sendefehler zeigen den vollständigen Befehl. Keine automatischen
+  Wiederholungen und keine Dummy-Argumente.
+- Mock bildet die beobachtete Ablehnung ab; Formatprüfung für alle Transportaktionen.
+  Erfolg der korrigierten Form auf MA/QLab ist noch zu bestätigen.
+
 ## 0.2.0-beta.4
 
 - Einheitliche Importdatei `QLab Control.xml`; die zusätzliche versionierte

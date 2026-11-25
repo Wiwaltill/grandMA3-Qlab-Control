@@ -1,6 +1,6 @@
 # Roadmap
 ## V1
-Current milestone: 0.2.0-beta.4 integration test build. Automatic pool
+Current milestone: 0.2.0-beta.5 integration test build. Automatic pool
 installation, ownership journal, repeat install/update, confirmed uninstall,
 native layout/status and explicit OSC test are implemented and mock-tested.
 Steps 1 and 5 remain open on the target system: import round-trip, zero-argument

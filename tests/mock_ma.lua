@@ -46,7 +46,11 @@ return function()
     end
     function m.command(s)
         m.commands[#m.commands+1]=s
-        if s:match('^SendOSC ') then return m.sendResult or 'OK' end
+        if s:match('^SendOSC ') then
+            -- The address-only form was rejected by the user's MA 2.5.1.1.
+            if not s:match('^SendOSC %d+ "[^",]+,,"$') then return 'Illegal value' end
+            return m.sendResult or 'OK'
+        end
         local dest=s:match('^Store (.-) /NoConfirmation$')
         if dest then
             local pool,index=dest:match('^(%a+Pool) (%d+)$')

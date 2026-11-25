@@ -1,8 +1,8 @@
 # OSC zwischen grandMA3 und QLab einrichten
 
-Stand: 0.2.0-beta.4, Ziel grandMA3 2.5.1.1 / QLab 5.
+Stand: 0.2.0-beta.5, Ziel grandMA3 2.5.1.1 / QLab 5.
 **Die Verbindung wird manuell eingerichtet.** Ein echter OSC-Test ist jetzt
-über den Setup-Knopf **OSC-Test** möglich. Die adressreine SendOSC-Syntax ist
+über den Setup-Knopf **OSC-Test** möglich. Die korrigierte SendOSC-Syntax mit leeren Typ-/Wertfeldern ist
 auf deinem Zielsystem noch zu verifizieren; der Test bestätigt keine Wiedergabe.
 
 Im Plugin öffnet **OSC-Anleitung** die Kurzhilfe. Dieser Knopf schließt die
@@ -80,7 +80,7 @@ Gespeicherte Einstellungen früherer englischer Builds bleiben lesbar.
 
 Für den echten Starttest im Setup **OSC-Test** wählen, einen eigenen
 ungefährlichen QLab-Cue eingeben und den Start bestätigen. Alternativ:
-`Plugin "QLab Control" "TEST 999"`. Die Form `SendOSC 1 "/cue/999/start"`
+`Plugin "QLab Control" "TEST 999"`. Die Form `SendOSC 1 "/cue/999/start,,"`
 wird damit real ausgeführt. Bei Syntaxfehler wird abgebrochen, ohne Wiederholung.
 QLab beobachten und das argumentfreie OSC-Paketformat prüfen. Eine gelbe
 MA-Sendeanzeige oder ein MA-OK belegen keine QLab-Wiedergabe.

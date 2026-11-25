@@ -73,3 +73,18 @@ vorhandenen Datei mit DataVersion 2.5.1.1 abgeglichen: Size zählt die Block-Kno
 jeder Block umfasst maximal 1024 dekodierte Bytes. Die generierten Blöcke sind
 Base64 und werden bytegenau geprüft. Die separate Lua-Datei wird nicht vom XML
 referenziert. Ein erfolgreicher Import auf dem Nutzer-onPC ist noch zu bestätigen.
+
+## 0.2.0-beta.5: Illegal value beim OSC-Test
+
+Nutzerbeobachtung auf onPC: Die bisherige Form ohne Trennkommas wird mit
+`Illegal value` abgelehnt. Der Formatter erzeugt jetzt
+`SendOSC 1 "/cue/999/start,,"`: Adresse, leeres Typfeld, leeres Wertefeld.
+Das folgt der Feldstruktur der offiziellen
+[SendOSC-Syntax 2.5](https://help.malighting.com/grandMA3/2.5/HTML/keyword_sendosc.html).
+Das Weglassen des Typs ist dort nicht ausdrücklich als Beispiel beschrieben;
+die korrigierte Form ist deshalb weiterhin auf MA/QLab zu prüfen.
+Es werden keine String-, Null- oder Impulse-Argumente als Ersatz hinzugefügt.
+
+Ein älterer [direkter Erfahrungsbericht im MA-Forum](https://forum.malighting.com/forum/thread/7610-sendosc-und-bitfocus-companion/)
+zeigt ebenfalls die Form mit zwei leeren Feldern. Das ist ergänzende historische
+Evidenz, kein versionierter Kompatibilitätsnachweis für 2.5.1.1.

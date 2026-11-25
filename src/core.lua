@@ -1,5 +1,5 @@
 -- Pure Lua: no grandMA globals, I/O, or network access.
-local M = {version = '0.2.0-beta.4'}
+local M = {version = '0.2.0-beta.5'}
 local transport = {START='start', STOP='stop', PAUSE='pause', RESUME='resume'}
 local special = {IDLE='idle', BLACKOUT='blackout'}
 local other = {SETUP=true, SELECT=true, NEXT=true, PANIC=true, RESTART=true,
@@ -134,8 +134,8 @@ function M.request(command, config, state, confirmed)
     nextState.lastAction=a; nextState.lastCue=target
     return {{address=address,arguments={}}},nextState
 end
--- Address-only SendOSC is an integration-test candidate; MA's manual does
--- not explicitly describe the zero-argument case. Never add a dummy payload.
+-- Preserve MA's address,type,value separators, leaving both fields empty.
+-- Address-only was rejected by the user's MA. Never add a dummy payload.
 function M.oscCommand(output,message)
     local index=integer(output,1,9999)
     assert(type(message)=='table' and type(message.arguments)=='table' and #message.arguments==0,
@@ -148,7 +148,7 @@ function M.oscCommand(output,message)
         local verb=a:match('/([a-z]+)$')
         assert(verb=='start' or verb=='stop' or verb=='pause' or verb=='resume','OSC-Aktion nicht erlaubt')
     end
-    return 'SendOSC '..index..' '..M.quote(a)
+    return 'SendOSC '..index..' '..M.quote(a..',,')
 end
 
 return M

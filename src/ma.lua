@@ -165,8 +165,10 @@ function M.new(core, api, guide, poolModule, plugin)
             if not confirmed then return end
         end
         for _,message in ipairs(messages) do
-            local result=api.Cmd(core.oscCommand(self.load().output,message))
-            assert(result=='OK','SendOSC nicht ausgeführt: '..tostring(result))
+            local osc=core.oscCommand(self.load().output,message)
+            local result=api.Cmd(osc)
+            assert(result=='OK','SendOSC nicht ausgeführt: '..tostring(result)..'\nBefehl: '..osc..
+                '\nBei erneutem Fehler MA-OSC-Zeilennummer und Send Command prüfen. Keine automatische Wiederholung.')
         end
         for _,k in ipairs({'selected','song','lastAction','lastCue'}) do write(k,nextState[k] or '') end
         refresh()

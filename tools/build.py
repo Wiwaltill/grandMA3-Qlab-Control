@@ -10,7 +10,7 @@ import hashlib
 import base64
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = '0.2.0-beta.4'
+VERSION = '0.2.0-beta.5'
 
 def build():
     out = ROOT / 'dist'
@@ -40,7 +40,7 @@ def build():
     lua = out / 'QLab Control.lua'
     lua.write_text(source)
     root = ET.Element('GMA3', DataVersion='2.5.1.1')
-    plugin = ET.SubElement(root, 'UserPlugin', Name='QLab Control', Version='0.2.0.4')
+    plugin = ET.SubElement(root, 'UserPlugin', Name='QLab Control', Version='0.2.0.5')
     component = ET.SubElement(plugin, 'ComponentLua', Name='QLab Control')
     # Native 2.5.1.1 FileContent format: Size is the number of 1024-byte blocks,
     # not the source size. With no FileName, import uses this embedded source.
