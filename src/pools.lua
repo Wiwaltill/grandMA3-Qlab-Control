@@ -58,7 +58,16 @@ function M.new(core,api,config,plugin)
         h:Set(p,tostring(v))
         local actual=h:Get(p)
         local matches=core.propertyMatches(v,actual)
-        assert(matches,'MA-Eigenschaft nicht übernommen: '..k..' = '..tostring(v)..' (gelesen '..tostring(actual)..')')
+        local editValue
+        -- Raw enum reads are indices. The documented Edit role returns the
+        -- property text; never assume Action index 3 always means Go+.
+        local roles=api.Enums and api.Enums.Roles
+        if not matches and roles and roles.Edit~=nil then
+            local ok,value=pcall(function() return h:Get(p,roles.Edit) end)
+            if ok then editValue=value; matches=core.propertyMatches(v,editValue) end
+        end
+        assert(matches,'MA-Eigenschaft nicht übernommen: '..k..' = '..tostring(v)..
+            ' (gelesen '..tostring(actual)..', Edit '..tostring(editValue)..')')
     end
     function self.preflight()
         checkScope()

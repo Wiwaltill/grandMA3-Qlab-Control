@@ -3,7 +3,7 @@
 Reusable grandMA3 Lua plugin for controlling QLab video cues via OSC from manually operated lighting sequences. Designed for grandMA3 2.5.1.1 and QLab 5 (version to confirm), without timecode or a dedicated video operator.
 
 ## Status
-**0.2.0-beta.6 — integration test build.** Native setup, automatic layout/
+**0.2.0-beta.7 — integration test build.** Native setup, automatic layout/
 macro/appearance installation, ownership preflight, repeat install/update and
 confirmed cleanup are implemented. Explicit TEST sends a real SendOSC command;
 START/STOP/PAUSE/RESUME and manual GO/PANIC also use the configured MA output.

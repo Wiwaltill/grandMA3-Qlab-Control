@@ -218,4 +218,23 @@ test('boolean readback resumes partial install without adopting foreign objects'
         noOSC(m)
     end
 end)
+test('enum readback uses MA Edit role and still rejects the wrong action',function()
+    local m=mock(); m.enumEditOverride='WrongAction'
+    local a=adapter(m)
+    rejects(function() a.install() end)
+    local layout=m.dp.Layouts[200]
+    assert(layout and m.vars.QLC_V1_owned_complete==0)
+    m.enumEditOverride=nil
+    a.install(); a.install()
+    assert(m.dp.Layouts[200]==layout and #layout:Children()==12)
+    assert(layout[1]:Get('Action')==3)
+    assert(layout[1]:Get('Action',m.roles.Edit)=='Go+')
+    noOSC(m)
+end)
+test('unknown enum without Edit role fails safely rather than trusting its index',function()
+    local m=mock(); m.api.Enums=nil
+    rejects(function() adapter(m).install() end)
+    assert(m.vars.QLC_V1_owned_complete==0)
+    noOSC(m)
+end)
 print(count..' pool/transport integration test groups passed (mocked MA)')

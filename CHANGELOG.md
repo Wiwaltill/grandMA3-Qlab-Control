@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.2.0-beta.7
+
+- Enum-Eigenschaften werden bei abweichendem Rohwert zusätzlich mit der
+  dokumentierten Enums.Roles.Edit-Rolle als Text gelesen und geprüft.
+  Behebt „Action = Go+ (gelesen 3)“ und denselben Fehlerweg bei Textausrichtung.
+- Keine fest verdrahtete Go+-Indexzuordnung. Falsche Texte oder nicht auflösbare
+  Indizes führen weiterhin zum sicheren Abbruch.
+- Mock simuliert Enum-Indizes; Fortsetzen der Teilinstallation und Ablehnung
+  einer falschen Aktion sind durch Regressionstests abgedeckt.
+
 ## 0.2.0-beta.6
 
 - Eigenschaftsprüfung akzeptiert native MA-Boolean-Werte für Yes/No, zusätzlich

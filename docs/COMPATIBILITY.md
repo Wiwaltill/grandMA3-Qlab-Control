@@ -88,3 +88,12 @@ Es werden keine String-, Null- oder Impulse-Argumente als Ersatz hinzugefügt.
 Ein älterer [direkter Erfahrungsbericht im MA-Forum](https://forum.malighting.com/forum/thread/7610-sendosc-und-bitfocus-companion/)
 zeigt ebenfalls die Form mit zwei leeren Feldern. Das ist ergänzende historische
 Evidenz, kein versionierter Kompatibilitätsnachweis für 2.5.1.1.
+
+## 0.2.0-beta.7: Enum-Rückgaben
+
+Auf dem Nutzer-onPC lieferte Action nach Setzen von Go+ den Rohwert 3.
+Das Plugin prüft bei Abweichung zusätzlich `Get(property, Enums.Roles.Edit)`.
+Diese Textdarstellung ist im offiziellen
+[Get-Beispiel](https://help.malighting.com/grandMA3/2.5/HTML/lua_object_get.html)
+beschrieben. Es wird keine allgemeine Zuordnung von Index 3 zu Go+ angenommen.
+Boolean-Rückgaben bleiben separat typgerecht geprüft.

@@ -2,6 +2,7 @@
 -- Command acceptance/property schema here cannot prove actual MA compatibility.
 return function()
     local m={vars={},commands={},sets=0,dialogs={},nextId=0}
+    m.roles={Edit=987} -- Deliberately arbitrary test role, never a runtime index.
     local methods={}
     function methods:ToAddr() return self.address end
     function methods:Children()
@@ -11,9 +12,13 @@ return function()
     end
     function methods:PropertyCount() return #self.schema end
     function methods:PropertyName(i) return self.schema[i+1] end
-    function methods:Get(k)
+    function methods:Get(k,role)
         assert(self.allowed[k],'Unknown property '..k)
         local v=self.props[k]
+        if k=='Action' or k=='CustomTextAlignH' or k=='CustomTextAlignV' then
+            if role==m.roles.Edit then return m.enumEditOverride or v end
+            return k=='Action' and 3 or 42
+        end
         if k=='Enabled' or k=='Execute' or k=='AddToCmdline' then
             if m.booleanReadback=='invalid' then return 'unrecognized' end
             if m.booleanReadback=='numeric' then return v=='Yes' and 1 or 0 end
@@ -88,7 +93,7 @@ return function()
         end
         error('Unexpected command: '..s)
     end
-    m.api={GlobalVars=function() return m.vars end,
+    m.api={Enums={Roles=m.roles},GlobalVars=function() return m.vars end,
         DataPool=function() return m.dp end, ShowData=function() return m.show end,
         HandleToStr=function(h) return h.id end,
         -- MA may return auxiliary values. Callers must consume just the value.
