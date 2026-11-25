@@ -40,7 +40,12 @@ function M.new(core, api, guide, poolModule, plugin)
             else return end
         end
     end
-    local function read(key) return api.GetVar(api.GlobalVars(),prefix..key) end
+    local function read(key)
+        -- A tail return forwards every MA return value. In tonumber(read(...)),
+        -- an auxiliary value would become the numeric-base argument.
+        local value=api.GetVar(api.GlobalVars(),prefix..key)
+        return value
+    end
     local function write(key,value)
         assert(api.SetVar(api.GlobalVars(),prefix..key,value), 'Speichern fehlgeschlagen: '..key)
     end

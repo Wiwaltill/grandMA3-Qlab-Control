@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.2.0-beta.3
+
+- GetVar-Adapter liefern ausdrücklich genau einen Wert. Zusätzliche
+  MA-Rückgabewerte können dadurch nicht mehr als zweites Argument (Zahlenbasis)
+  an tonumber gelangen. Behebt den reproduzierten Fehler „string expected,
+  got number“ bei der Prüfung des Konfigurationskennzeichens.
+- Derselbe Fehlerweg im Eigentums-/Statusadapter korrigiert.
+- Regressionstest mit zusätzlichen numerischen, booleschen und Textwerten
+  für Installation, Auswahl, OSC-Test, Status und Cleanup.
+
 ## 0.2.0-beta.2
 
 - Plugin-Handle wird erst bei der Installation im geschützten Aufruf aufgelöst.

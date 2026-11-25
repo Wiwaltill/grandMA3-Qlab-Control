@@ -7,7 +7,10 @@ function M.new(core,api,config,plugin)
     local pools={Layout=dp.Layouts,Macro=dp.Macros,Appearance=api.ShowData().Appearances}
     local plan=core.plan(config)
     local prefix='QLC_V1_owned_'
-    local function read(k) return api.GetVar(vars,prefix..k) end
+    local function read(k)
+        local value=api.GetVar(vars,prefix..k)
+        return value
+    end
     local function save(k,v) assert(api.SetVar(vars,prefix..k,v),'Eigentumsnachweis nicht gespeichert: '..k) end
     local function key(o) return o.kind..'_'..o.id end
     local function object(o) return assert(pools[o.kind],'Pool fehlt: '..o.kind)[o.id] end

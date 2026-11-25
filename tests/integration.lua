@@ -180,4 +180,18 @@ test('component loads without touching MA and opens setup with unavailable paren
     for k in pairs(m.api) do _G[k]=previous[k] end
     assert(ok,err)
 end)
+test('auxiliary GetVar results never become tonumber base arguments',function()
+    for _,extra in ipairs({10,0,true,'metadata'}) do
+        local m=mock()
+        m.api.GetVar=function(vars,k) return vars[k],extra end
+        local app=configured(m)
+        app.run('INSTALL')
+        app.run('SELECT 101.2')
+        app.run('TEST 999.20')
+        assert(m.vars.QLC_V1_lastCue=='999.20')
+        assert(m.dp.Layouts[200][12]:Get('CustomTextText'):find('TEST 999.20',1,true))
+        app.run('UNINSTALL')
+        assert(not m.dp.Layouts[200])
+    end
+end)
 print(count..' pool/transport integration test groups passed (mocked MA)')

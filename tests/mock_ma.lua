@@ -77,7 +77,8 @@ return function()
     m.api={GlobalVars=function() return m.vars end,
         DataPool=function() return m.dp end, ShowData=function() return m.show end,
         HandleToStr=function(h) return h.id end,
-        GetVar=function(vars,k) return vars[k] end,
+        -- MA may return auxiliary values. Callers must consume just the value.
+        GetVar=function(vars,k) return vars[k],10 end,
         SetVar=function(vars,k,v) vars[k]=v; return true end,
         Cmd=m.command, Printf=function() end,
         MessageBox=function(box)
