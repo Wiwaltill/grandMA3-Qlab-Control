@@ -3,7 +3,18 @@
 Reusable grandMA3 Lua plugin for controlling QLab video cues via OSC from manually operated lighting sequences. Designed for grandMA3 2.5.1.1 and QLab 5 (version to confirm), without timecode or a dedicated video operator.
 
 ## Status
-Planning / pre-implementation. No working release or hardware validation yet.
+V1 development started: **0.1.0-dev.1 source preview**. Pure Lua command/state
+core, native setup dialog, layout/installation data plan and mock tests exist.
+Automatic pool creation, OSC transmission and native XML import are **not yet
+enabled**. No onPC/console or QLab runtime validation; no production release.
+
+Build: `python3 tools/build.py`. Test with Lua 5.4 via Lupa:
+`python3 tools/test.py` (requires `pip install lupa`). Generated files are in `dist/`.
+
+- [Deutsche Entwicklungs- und Setup-Anleitung](docs/SETUP-DE.md)
+- [Kompatibilität und offizielle Quellen](docs/COMPATIBILITY.md)
+- [Manuelle Tests und Release-Gates](docs/VALIDATION.md)
+- [Changelog](CHANGELOG.md)
 
 ## Documentation
 - [Development instructions for Codex](AGENTS.md)

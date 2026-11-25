@@ -1,5 +1,11 @@
 # Roadmap
 ## V1
+Current milestone: 0.1.0-dev.1 source preview. Parser/config/state, mock-tested
+runtime boundaries, graphical setup and complete layout/pool data plan exist.
+Steps 1, 3 and 4 remain incomplete: 2.5.1.1 smoke tests, native export fixtures,
+pool mutation/ownership implementation and argument-free SendOSC encoding are
+required before installation or transport can be enabled. See docs/VALIDATION.md.
+
 1. Validate MA 2.5.1.1 plugin entry point, argument dispatch, SendOSC encoding and QLab 5 OSC addresses/types with official docs and a minimal smoke test. Earlier chat offered two alternative syntaxes; neither has been hardware-tested.
 2. Build tested command parser, configuration and state model; implement transport adapter.
 3. Add setup dialog and collision-safe automatic pool installation.
